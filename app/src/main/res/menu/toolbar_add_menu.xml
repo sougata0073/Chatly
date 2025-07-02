@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/addFriend"
+        android:icon="@drawable/ic_user"
+        android:title="Add Friend" />
+
+    <item
+        android:id="@+id/createGroup"
+        android:icon="@drawable/ic_groups"
+        android:title="Create Group" />
+</menu>

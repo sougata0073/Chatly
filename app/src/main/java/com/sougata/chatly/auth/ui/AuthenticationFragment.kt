@@ -18,6 +18,7 @@ import com.sougata.chatly.R
 import com.sougata.chatly.auth.view_models.AuthenticationVM
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.databinding.FragmentAuthenticationBinding
+import com.sougata.chatly.util.DecoratedViews
 import kotlinx.coroutines.launch
 
 class AuthenticationFragment : Fragment() {
@@ -72,25 +73,37 @@ class AuthenticationFragment : Fragment() {
                     authVM.loginWithGoogle(googleIdToken)
 
                 } catch (e: GetCredentialException) {
-                    Snackbar.make(requireView(), e.message.toString(), Snackbar.LENGTH_LONG).show()
+                    DecoratedViews.showSnackBar(
+                        requireView(),
+                        requireView(),
+                        e.message.toString(),
+                        Snackbar.LENGTH_LONG
+                    )
                 }
             }
         }
     }
 
     private fun registerObservers() {
-        this.authVM.loginWithGoogle.observe(this.viewLifecycleOwner){
-            if(it.taskStatus == TaskStatus.STARTED){
+        this.authVM.loginWithGoogle.observe(this.viewLifecycleOwner) {
+            if (it.taskStatus == TaskStatus.STARTED) {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE
 
-            } else if(it.taskStatus == TaskStatus.COMPLETED){
+            } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE
-                this.findNavController().navigate(R.id.action_authenticationFragment_to_onboardingIntroductionFragment)
+                this.findNavController()
+                    .navigate(R.id.action_authenticationFragment_to_onboardingIntroductionFragment)
 
-            } else if(it.taskStatus == TaskStatus.FAILED){
+            } else if (it.taskStatus == TaskStatus.FAILED) {
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE
+                DecoratedViews.showSnackBar(
+                    requireView(),
+                    requireView(),
+                    it.message.toString(),
+                    Snackbar.LENGTH_LONG
+                )
             }
         }
     }

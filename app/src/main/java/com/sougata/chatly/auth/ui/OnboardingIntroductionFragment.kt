@@ -1,10 +1,14 @@
 package com.sougata.chatly.auth.ui
 
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
+import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.databinding.FragmentOnboardingIntroductionBinding
 
@@ -26,6 +30,10 @@ class OnboardingIntroductionFragment : Fragment() {
 
         this.setupViewPager()
         this.setupButtons()
+
+        requireActivity().onBackPressedDispatcher.addCallback {
+            requireActivity().finishAffinity()
+        }
     }
 
     override fun onDestroyView() {
@@ -64,7 +72,26 @@ class OnboardingIntroductionFragment : Fragment() {
 
     private fun setupButtons() {
         this.binding.btnNext.setOnClickListener {
-            this.binding.vpContent.currentItem++
+            val lastItemIndex = this.binding.vpContent.adapter!!.itemCount - 1
+            val currentItemIndex = this.binding.vpContent.currentItem
+
+            if (currentItemIndex == lastItemIndex) {
+                goToMainActivity()
+            } else {
+                this.binding.vpContent.currentItem++
+            }
         }
+
+        this.binding.btnGetStarted.setOnClickListener {
+            this.goToMainActivity()
+        }
+        this.binding.btnSkip.setOnClickListener {
+            this.goToMainActivity()
+        }
+    }
+
+    private fun goToMainActivity() {
+        startActivity(Intent(requireActivity(), MainActivity::class.java))
+        requireActivity().finishAffinity()
     }
 }

@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <style name="circleImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="popupMenu" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:textColor">@color/bw</item>
+        <item name="android:colorBackground">@color/popup_menu_bg</item>
+    </style>
+    
+    <style name="bottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">
+        <item name="android:color">@color/bottom_nav_active_indicator</item>
+    </style>
+
+    <style name="bottomNavText" parent="Widget.Material3.BottomNavigationView">
+        <item name="android:textColor">@color/bw_light</item>
     </style>
 
 </resources>

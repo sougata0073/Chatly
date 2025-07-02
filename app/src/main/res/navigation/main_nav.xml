@@ -2,4 +2,26 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/main_nav" />
+    android:id="@+id/main_nav"
+    app:startDestination="@id/chatsHomeFragment">
+    <fragment
+        android:id="@+id/chatsHomeFragment"
+        android:name="com.sougata.chatly.features.chats.ChatsHomeFragment"
+        android:label="fragment_chats_home"
+        tools:layout="@layout/fragment_chats_home" />
+    <fragment
+        android:id="@+id/groupsHomeFragment"
+        android:name="com.sougata.chatly.features.groups.GroupsHomeFragment"
+        android:label="fragment_groups_home"
+        tools:layout="@layout/fragment_groups_home" />
+    <fragment
+        android:id="@+id/profileHomeFragment"
+        android:name="com.sougata.chatly.features.profile.ProfileHomeFragment"
+        android:label="fragment_profile_home"
+        tools:layout="@layout/fragment_profile_home" />
+    <fragment
+        android:id="@+id/moreHomeFragment"
+        android:name="com.sougata.chatly.features.more.MoreHomeFragment"
+        android:label="fragment_more_home"
+        tools:layout="@layout/fragment_more_home" />
+</navigation>

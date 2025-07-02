@@ -7,4 +7,7 @@
     <color name="onboarding_intro_content">#40C4FF</color>
     <color name="button_bg_gradient_start">#FF40C4FF</color>
     <color name="button_bg_gradient_end">#FF03A9F4</color>
+    <color name="bw_light">#1A1D22</color>
+    <color name="popup_menu_bg">#4A4B62</color>
+    <color name="bottom_nav_bg">#393A4C</color>
 </resources>
