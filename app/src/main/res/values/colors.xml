@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="bw">#FF000000</color>
+    <color name="bw_inverted">#FFFFFFFF</color>
+    <color name="bw_background">#FFFFFFFF</color>
+    <color name="light_blue">#C4EDFF</color>
+    <color name="onboarding_intro_content">#1565C0</color>
+    <color name="onboarding_intro_circle_stroke">#ECF9FF</color>
+    <color name="button_bg_gradient_start">#FF40C4FF</color>
+    <color name="button_bg_gradient_end">#FF03A9F4</color>
+    <color name="google_blue">#4285F4</color>
+</resources>

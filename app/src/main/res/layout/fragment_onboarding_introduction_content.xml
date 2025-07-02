@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        tools:context=".auth.ui.OnboardingIntroductionContentFragment">
+
+        <ImageView
+            android:id="@+id/ivMainImage"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:contentDescription="Main image"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter"
+            tools:src="@drawable/onboarding_intro_1" />
+
+        <TextView
+            android:id="@+id/tvHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/onboarding_intro_content"
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:text="Group chatting" />
+
+        <TextView
+            android:id="@+id/tvSubHeading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/onboarding_intro_content"
+            android:textSize="16sp"
+            tools:text="Connect with multiple members in group chat" />
+
+    </LinearLayout>
+</layout>

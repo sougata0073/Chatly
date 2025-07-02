@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="bw">#FFFFFFFF</color>
+    <color name="bw_inverted">#FF000000</color>
+    <color name="bw_background">#FF000000</color>
+    <color name="onboarding_intro_circle_stroke">#2C2D3A</color>
+    <color name="onboarding_intro_content">#40C4FF</color>
+    <color name="button_bg_gradient_start">#FF40C4FF</color>
+    <color name="button_bg_gradient_end">#FF03A9F4</color>
+</resources>

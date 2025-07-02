@@ -1,0 +1,7 @@
+<resources>
+
+    <string name="app_name">Chatly</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="server_client_id">268435376386-j33s4bs920r6qm8m53bd8jfq84cnbdra.apps.googleusercontent.com</string>
+
+</resources>
