@@ -9,5 +9,6 @@ data class Chat(
     var id: String? = null,
     var userId1: String? = null,
     var userId2: String? = null,
+    var lastMessageId: String? = null,
     var timestamp: Timestamp? = null
 ): Parcelable

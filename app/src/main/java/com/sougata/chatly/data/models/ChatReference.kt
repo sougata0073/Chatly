@@ -8,5 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class ChatReference(
     var id: String? = null,
     var chatId: String? = null,
+    var unreadMessageCount: Int? = null,
     var timestamp: Timestamp? = null
 ): Parcelable

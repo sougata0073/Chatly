@@ -9,5 +9,6 @@ data class GroupChat(
     var id: String? = null,
     var name: String? = null,
     var description: String? = null,
+    var lastGroupMessageId: String? = null,
     var timestamp: Timestamp? = null
 ): Parcelable
