@@ -1,4 +1,4 @@
-package com.sougata.chatly.data
+package com.sougata.chatly.data.repositories
 
 import com.google.firebase.auth.GoogleAuthProvider
 import com.google.firebase.auth.ktx.auth

@@ -8,8 +8,6 @@
     <color name="light_blue">#C4EDFF</color>
     <color name="onboarding_intro_content">#1565C0</color>
     <color name="onboarding_intro_circle_stroke">#ECF9FF</color>
-    <color name="button_bg_gradient_start">#FF40C4FF</color>
-    <color name="button_bg_gradient_end">#FF03A9F4</color>
     <color name="google_blue">#4285F4</color>
     <color name="grey">#808080</color>
     <color name="snack_bar_bg">#2D2C30</color>
@@ -17,4 +15,6 @@
     <color name="popup_menu_bg">#FFFFFFFF</color>
     <color name="bottom_nav_active_indicator">#03A9F4</color>
     <color name="bottom_nav_bg">#FFFFFF</color>
+    <color name="unread_message">#9A9BB1</color>
+    <color name="light_blue_dark">#40C4FF</color>
 </resources>

@@ -6,7 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.sougata.chatly.common.TaskComplete
 import com.sougata.chatly.common.TaskStatus
-import com.sougata.chatly.data.AuthenticationRepository
+import com.sougata.chatly.data.repositories.AuthenticationRepository
 
 class AuthenticationVM(application: Application) : AndroidViewModel(application) {
     private val authRepo = AuthenticationRepository()

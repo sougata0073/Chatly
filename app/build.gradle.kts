@@ -7,6 +7,9 @@ plugins {
 
     // Google services plugin
     id("com.google.gms.google-services")
+
+    // For parcelization
+    id("kotlin-parcelize")
 }
 
 android {
@@ -63,6 +66,8 @@ dependencies {
     implementation("com.google.firebase:firebase-auth")
     // Analytics
     implementation("com.google.firebase:firebase-analytics")
+    // Firestore
+    implementation("com.google.firebase:firebase-firestore-ktx")
 
     // Credential Manager
     implementation("androidx.credentials:credentials:1.5.0")
