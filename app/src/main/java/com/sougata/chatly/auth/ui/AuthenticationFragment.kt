@@ -41,6 +41,8 @@ class AuthenticationFragment : Fragment() {
 
         this.authVM = ViewModelProvider(this)[AuthenticationVM::class.java]
 
+        this.binding.viewBlocker.progressBar.trackColor = requireActivity().getColor(R.color.bw)
+
         this.setupContinueWithGoogleButton()
         this.registerObservers()
     }
@@ -94,14 +96,14 @@ class AuthenticationFragment : Fragment() {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 this.findNavController()
-                    .navigate(R.id.action_authenticationFragment_to_onboardingIntroductionFragment)
+                    .navigate(R.id.action_authenticationFragment_to_userRegisterDetailsFragment)
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 DecoratedViews.showSnackBar(
                     requireView(),
                     requireView(),
-                    it.message.toString(),
+                    it.message,
                     Snackbar.LENGTH_LONG
                 )
             }

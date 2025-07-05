@@ -82,9 +82,9 @@
             android:paddingBottom="10dp"
             android:text="Continue With Google"
             android:textColor="@color/white"
-            android:textSize="18sp"
+            android:textSize="20sp"
             android:textStyle="bold"
-            app:cornerRadius="10dp"
+            app:cornerRadius="30dp"
             app:icon="@drawable/ic_google"
             app:iconGravity="start"
             app:iconTint="@null"
@@ -109,8 +109,12 @@
         <include
             android:id="@+id/viewBlocker"
             layout="@layout/loader_view_blocker_set"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

@@ -3,16 +3,16 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/auth_nav"
-    app:startDestination="@id/authenticationFragment">
+    app:startDestination="@id/onboardingIntroductionFragment">
 
     <fragment
         android:id="@+id/authenticationFragment"
         android:name="com.sougata.chatly.auth.ui.AuthenticationFragment"
         android:label="fragment_authentication"
-        tools:layout="@layout/fragment_authentication">
+        tools:layout="@layout/fragment_authentication"> />
         <action
-            android:id="@+id/action_authenticationFragment_to_onboardingIntroductionFragment"
-            app:destination="@id/onboardingIntroductionFragment"
+            android:id="@+id/action_authenticationFragment_to_userRegisterDetailsFragment"
+            app:destination="@id/userRegisterDetailsFragment"
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
@@ -22,7 +22,19 @@
         android:id="@+id/onboardingIntroductionFragment"
         android:name="com.sougata.chatly.auth.ui.OnboardingIntroductionFragment"
         android:label="fragment_onboarding_introduction"
-        tools:layout="@layout/fragment_onboarding_introduction" />
-
+        tools:layout="@layout/fragment_onboarding_introduction" >
+        <action
+            android:id="@+id/action_onboardingIntroductionFragment_to_authenticationFragment"
+            app:destination="@id/authenticationFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+    </fragment>
+    <fragment
+        android:id="@+id/userRegisterDetailsFragment"
+        android:name="com.sougata.chatly.auth.ui.UserRegisterDetailsFragment"
+        android:label="fragment_user_register_details"
+        tools:layout="@layout/fragment_user_register_details"/>
 
 </navigation>

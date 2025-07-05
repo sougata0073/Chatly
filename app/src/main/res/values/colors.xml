@@ -17,4 +17,6 @@
     <color name="bottom_nav_bg">#FFFFFF</color>
     <color name="unread_message">#9A9BB1</color>
     <color name="light_blue_dark">#40C4FF</color>
+    <color name="user_register_header_bg_main">#16B2F8</color>
+    <color name="user_register_header_bg_stroke">#ECF9FF</color>
 </resources>
