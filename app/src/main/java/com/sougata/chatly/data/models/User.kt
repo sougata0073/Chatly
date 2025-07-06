@@ -18,4 +18,20 @@ data class User(
     var location: @RawValue GeoPoint? = null,
     var profileImageUrl: String? = null,
     var timestamp: Timestamp? = null
-): Parcelable
+) : Parcelable {
+
+    fun toMap(): Map<String, Any?> {
+        return mapOf(
+            "id" to id,
+            "name" to name,
+            "email" to email,
+            "phoneNumber" to phoneNumber,
+            "gender" to gender,
+            "dob" to dob,
+            "bio" to bio,
+            "location" to location,
+            "profileImageUrl" to profileImageUrl,
+            "timestamp" to timestamp
+        )
+    }
+}

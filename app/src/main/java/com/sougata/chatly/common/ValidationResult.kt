@@ -1,6 +1,6 @@
 package com.sougata.chatly.common
 
-data class TaskComplete(
-    val taskStatus: TaskStatus,
+data class ValidationResult(
+    val isValid: Boolean,
     val message: String
 )

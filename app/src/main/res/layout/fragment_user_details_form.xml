@@ -4,12 +4,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="vm"
+            type="com.sougata.chatly.auth.view_models.UserDetailsFormVM" />
+
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/user_register_header_bg_main"
         android:fitsSystemWindows="true"
-        tools:context=".auth.ui.UserRegisterDetailsFragment">
+        tools:context=".auth.ui.UserDetailsFormFragment">
 
         <ScrollView
             android:layout_width="match_parent"
@@ -92,7 +100,7 @@
                     app:layout_constraintTop_toBottomOf="@id/headerLayout">
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etName"
+                        android:id="@+id/nameLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="Name"
@@ -102,16 +110,18 @@
                         app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etName"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="textPersonName"
+                            android:text="@={vm.name}"
                             android:textColor="@color/bw"
                             android:textSize="18sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etEmail"
+                        android:id="@+id/emailLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -122,17 +132,19 @@
                         app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etEmail"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:enabled="false"
                             android:inputType="textEmailAddress"
+                            android:text="@={vm.email}"
                             android:textColor="@color/bw"
                             android:textSize="18sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etPhoneNumber"
+                        android:id="@+id/phoneNumberLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -143,16 +155,18 @@
                         app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etPhoneNumber"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="phone"
+                            android:text="@={vm.phoneNumber}"
                             android:textColor="@color/bw"
                             android:textSize="18sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etGender"
+                        android:id="@+id/genderLayout"
                         style="@style/Widget.Material3.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -160,10 +174,12 @@
                         app:boxStrokeColor="@color/edit_text_box_stroke">
 
                         <AutoCompleteTextView
+                            android:id="@+id/atvGender"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:hint="Gender"
                             android:inputType="none"
+                            android:text="@={vm.gender}"
                             android:textColor="@color/bw"
                             app:hintTextColor="@color/bw"
                             app:simpleItems="@array/genders" />
@@ -171,7 +187,7 @@
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etDob"
+                        android:id="@+id/dobLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -182,16 +198,19 @@
                         app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etDob"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
+                            android:enabled="false"
                             android:inputType="text"
+                            android:text="@={vm.dobString}"
                             android:textColor="@color/bw"
                             android:textSize="18sp" />
 
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
-                        android:id="@+id/etBio"
+                        android:id="@+id/bioLayout"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
@@ -202,9 +221,11 @@
                         app:hintTextColor="@color/grey">
 
                         <com.google.android.material.textfield.TextInputEditText
+                            android:id="@+id/etBio"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:inputType="text"
+                            android:text="@={vm.bio}"
                             android:textColor="@color/bw"
                             android:textSize="18sp" />
 

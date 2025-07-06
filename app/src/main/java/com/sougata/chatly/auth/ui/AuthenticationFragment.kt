@@ -1,5 +1,6 @@
 package com.sougata.chatly.auth.ui
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -14,8 +15,11 @@ import androidx.navigation.fragment.findNavController
 import com.google.android.libraries.identity.googleid.GetGoogleIdOption
 import com.google.android.libraries.identity.googleid.GoogleIdTokenCredential
 import com.google.android.material.snackbar.Snackbar
+import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.auth.view_models.AuthenticationVM
+import com.sougata.chatly.common.Keys
+import com.sougata.chatly.common.Messages
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.databinding.FragmentAuthenticationBinding
 import com.sougata.chatly.util.DecoratedViews
@@ -39,9 +43,9 @@ class AuthenticationFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        this.authVM = ViewModelProvider(this)[AuthenticationVM::class.java]
+        this.binding.viewBlocker.progressBar.setIndicatorColor(requireActivity().getColor(R.color.bw))
 
-        this.binding.viewBlocker.progressBar.trackColor = requireActivity().getColor(R.color.bw)
+        this.authVM = ViewModelProvider(this)[AuthenticationVM::class.java]
 
         this.setupContinueWithGoogleButton()
         this.registerObservers()
@@ -95,8 +99,20 @@ class AuthenticationFragment : Fragment() {
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE
-                this.findNavController()
-                    .navigate(R.id.action_authenticationFragment_to_userRegisterDetailsFragment)
+
+                if (it.message == Messages.NEW_USER) {
+                    val bundle = Bundle().apply {
+                        putParcelable(Keys.USER, it.result)
+                    }
+
+                    this.findNavController().navigate(
+                        R.id.action_authenticationFragment_to_userRegisterDetailsFragment,
+                        bundle
+                    )
+                } else if (it.message == Messages.OLD_USER) {
+                    startActivity(Intent(requireContext(), MainActivity::class.java))
+                    requireActivity().finishAffinity()
+                }
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
                 this.binding.viewBlocker.parentLayout.visibility = View.GONE

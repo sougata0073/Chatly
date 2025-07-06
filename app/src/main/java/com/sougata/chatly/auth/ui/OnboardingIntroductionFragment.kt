@@ -1,6 +1,5 @@
 package com.sougata.chatly.auth.ui
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +7,6 @@ import android.view.ViewGroup
 import androidx.activity.addCallback
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
-import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.databinding.FragmentOnboardingIntroductionBinding
 
@@ -93,7 +91,7 @@ class OnboardingIntroductionFragment : Fragment() {
 
     private fun goToAuthenticationFragment() {
         this.findNavController()
-            .navigate(R.id.userRegisterDetailsFragment)
+            .navigate(R.id.action_onboardingIntroductionFragment_to_authenticationFragment)
     }
 
 }
