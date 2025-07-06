@@ -126,6 +126,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="15dp"
                         android:hint="Email"
+                        android:alpha="0.5"
                         app:boxStrokeColor="@color/edit_text_box_stroke"
                         app:endIconMode="clear_text"
                         app:endIconTint="@color/bw"

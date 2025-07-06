@@ -113,12 +113,12 @@ class UserDetailsFormFragment : Fragment() {
                 return@setOnClickListener
             }
             val emailResult = Validator.validateEmail(emailString.orEmpty())
-            if (!emailResult.isValid || emailResult.message.isEmpty()) {
+            if (!emailString.isNullOrEmpty() && !emailResult.isValid) {
                 this.binding.emailLayout.error = emailResult.message
                 return@setOnClickListener
             }
             val phoneNumberResult = Validator.validatePhoneNumber(phoneNumberString.orEmpty())
-            if (!phoneNumberResult.isValid) {
+            if (!phoneNumberString.isNullOrEmpty() && !phoneNumberResult.isValid) {
                 this.binding.phoneNumberLayout.error = phoneNumberResult.message
                 return@setOnClickListener
             }
