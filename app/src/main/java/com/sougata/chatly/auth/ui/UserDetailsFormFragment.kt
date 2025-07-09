@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.android.material.datepicker.MaterialDatePicker
+import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.auth.view_models.UserDetailsFormVM
@@ -93,7 +94,7 @@ class UserDetailsFormFragment : Fragment() {
                     requireView(),
                     requireView(),
                     it.message,
-                    com.google.android.material.snackbar.Snackbar.LENGTH_LONG
+                    Snackbar.LENGTH_LONG
                 )
             }
         }
@@ -124,16 +125,18 @@ class UserDetailsFormFragment : Fragment() {
             }
 
             val updatedUser = User(
-                id = this.previousUser.id,
+                id = null,
+                uid = this.previousUser.uid,
                 name = nameString,
-                email = emailString,
+                email = null,
                 phoneNumber = phoneNumberString,
                 gender = genderString,
-                dob = dob,
+                dob = if (dob == null) null else DateTime.millisToISOTimestampString(dob),
                 bio = bioString,
                 location = null,
-                profileImageUrl = this.previousUser.profileImageUrl,
-                timestamp = this.previousUser.timestamp
+                profileImageUrl = null,
+                createdAt = null,
+                isProfileUpdatedOnce = true
             )
 
             this.vm.updateUserDetails(updatedUser)
@@ -147,8 +150,8 @@ class UserDetailsFormFragment : Fragment() {
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
             datePicker.addOnPositiveButtonClickListener { timeInMillis ->
-                this.vm.dob = DateTime.getTimeStamp(timeInMillis)
-                this.vm.dobString.value = DateTime.getDateString(timeInMillis)
+                this.vm.dob = timeInMillis
+                this.vm.dobString.value = DateTime.millisToDateString(timeInMillis)
             }
 
             datePicker.show(this.parentFragmentManager, "DatePicker")

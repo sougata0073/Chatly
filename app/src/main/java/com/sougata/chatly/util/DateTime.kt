@@ -1,23 +1,15 @@
 package com.sougata.chatly.util
 
-import com.google.firebase.Timestamp
 import com.sougata.chatly.common.Date
+import java.time.Instant
+import java.time.OffsetDateTime
+import java.time.ZoneOffset
+import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 object DateTime {
 
-    fun getDate(timestamp: Timestamp): Date {
-        val calendar = Calendar.getInstance()
-        calendar.time = timestamp.toDate()
-
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val year = calendar.get(Calendar.YEAR)
-
-        return Date(day, month, year)
-    }
-
-    fun getDate(timeInMillis: Long): Date {
+    fun millisToDate(timeInMillis: Long): Date {
         val calendar = Calendar.getInstance()
         calendar.timeInMillis = timeInMillis
 
@@ -28,18 +20,22 @@ object DateTime {
         return Date(day, month, year)
     }
 
-    fun getDateString(timestamp: Timestamp): String {
-        return this.getDate(timestamp).toString()
+    fun millisToDateString(timeInMillis: Long): String {
+        return this.millisToDate(timeInMillis).toString()
     }
 
-    fun getDateString(timeInMillis: Long): String {
-        return this.getDate(timeInMillis).toString()
+    fun isoTimestampToMillis(isoTimestamp: String): Long {
+        val dateTime = OffsetDateTime.parse(isoTimestamp, DateTimeFormatter.ISO_OFFSET_DATE_TIME)
+        return dateTime.toInstant().toEpochMilli()
     }
 
-    fun getTimeStamp(timeInMillis: Long): Timestamp {
-        val calendar = Calendar.getInstance()
-        calendar.timeInMillis = timeInMillis
+    fun isoTimestampToDate(isoTimestamp: String): Date {
+        return this.millisToDate(this.isoTimestampToMillis(isoTimestamp))
+    }
 
-        return Timestamp(calendar.time)
+    fun millisToISOTimestampString(timeInMillis: Long): String {
+        return Instant.ofEpochMilli(timeInMillis)
+            .atOffset(ZoneOffset.UTC)
+            .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     }
 }

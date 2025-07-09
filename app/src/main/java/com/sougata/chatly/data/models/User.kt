@@ -1,37 +1,23 @@
 package com.sougata.chatly.data.models
 
 import android.os.Parcelable
-import com.google.firebase.Timestamp
-import com.google.firebase.firestore.GeoPoint
 import kotlinx.parcelize.Parcelize
-import kotlinx.parcelize.RawValue
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 
 @Parcelize
+@Serializable
 data class User(
-    var id: String? = null,
-    var name: String? = null,
-    var email: String? = null,
-    var phoneNumber: String? = null,
-    var gender: String? = null,
-    var dob: Timestamp? = null,
-    var bio: String? = null,
-    var location: @RawValue GeoPoint? = null,
-    var profileImageUrl: String? = null,
-    var timestamp: Timestamp? = null
-) : Parcelable {
-
-    fun toMap(): Map<String, Any?> {
-        return mapOf(
-            "id" to id,
-            "name" to name,
-            "email" to email,
-            "phoneNumber" to phoneNumber,
-            "gender" to gender,
-            "dob" to dob,
-            "bio" to bio,
-            "location" to location,
-            "profileImageUrl" to profileImageUrl,
-            "timestamp" to timestamp
-        )
-    }
-}
+    @SerialName("id") val id: Int? = null,
+    @SerialName("uid") val uid: String? = null,
+    @SerialName("name") val name: String? = null,
+    @SerialName("email") val email: String? = null,
+    @SerialName("phone_number") val phoneNumber: String? = null,
+    @SerialName("gender") val gender: String? = null,
+    @SerialName("dob") val dob: String? = null,
+    @SerialName("bio") val bio: String? = null,
+    @SerialName("location") val location: Location? = null,
+    @SerialName("profile_image_url") val profileImageUrl: String? = null,
+    @SerialName("is_profile_updated_once") val isProfileUpdatedOnce: Boolean? = null,
+    @SerialName("created_at") val createdAt: String? = null
+): Parcelable

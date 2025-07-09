@@ -1,13 +1,5 @@
 package com.sougata.chatly.data.util
 
-import com.sougata.chatly.data.util.DataGenerator.generateUserSearchKeywords
-
-fun main() {
-    val name = "FirstName          MiddleName     LastName    "
-    val keywords = generateUserSearchKeywords(name)
-    println(keywords)
-}
-
 object DataGenerator {
 
     fun generateUserSearchKeywords(name: String): List<String> {

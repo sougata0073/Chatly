@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -5,11 +7,11 @@ plugins {
     // Safe args
     id("androidx.navigation.safeargs.kotlin")
 
-    // Google services plugin
-    id("com.google.gms.google-services")
-
     // For parcelization
     id("kotlin-parcelize")
+
+    // Serialization plugin
+    kotlin("plugin.serialization") version "2.2.0"
 }
 
 android {
@@ -18,12 +20,17 @@ android {
 
     defaultConfig {
         applicationId = "com.sougata.chatly"
-        minSdk = 24
+        minSdk = 30
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "SUPABASE_URL", properties.getProperty("SUPABASE_URL"))
+        buildConfigField("String", "SUPABASE_KEY", properties.getProperty("SUPABASE_KEY"))
     }
 
     buildTypes {
@@ -44,6 +51,7 @@ android {
     }
     buildFeatures {
         dataBinding = true
+        buildConfig = true
     }
 }
 
@@ -58,16 +66,17 @@ dependencies {
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
 
-    // Firebase BOM
-    implementation(platform("com.google.firebase:firebase-bom:33.16.0"))
-
-    // Firebase
+    // Supabase BOM
+    implementation(platform("io.github.jan-tennert.supabase:bom:3.2.0"))
+    // Supabase
+    // Database
+    implementation("io.github.jan-tennert.supabase:postgrest-kt")
     // Authentication
-    implementation("com.google.firebase:firebase-auth")
-    // Analytics
-    implementation("com.google.firebase:firebase-analytics")
-    // Firestore
-    implementation("com.google.firebase:firebase-firestore-ktx")
+    implementation("io.github.jan-tennert.supabase:auth-kt")
+    // Storage
+    implementation("io.github.jan-tennert.supabase:storage-kt")
+    // Ktor client
+    implementation("io.ktor:ktor-client-android:3.2.1")
 
     // Credential Manager
     implementation("androidx.credentials:credentials:1.5.0")

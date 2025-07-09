@@ -8,10 +8,10 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.sougata.chatly" />
-                  <option name="mobileSdkAppId" value="1:268435376386:android:71fffb9a6805f0addada1b" />
-                  <option name="projectId" value="chatly-cf965" />
-                  <option name="projectNumber" value="268435376386" />
+                  <option name="appId" value="PLACEHOLDER" />
+                  <option name="mobileSdkAppId" value="" />
+                  <option name="projectId" value="" />
+                  <option name="projectNumber" value="" />
                 </ConnectionSetting>
               </option>
               <option name="signal" value="SIGNAL_UNSPECIFIED" />

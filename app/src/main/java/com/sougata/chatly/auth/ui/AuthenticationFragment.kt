@@ -2,6 +2,7 @@ package com.sougata.chatly.auth.ui
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -24,6 +25,8 @@ import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.databinding.FragmentAuthenticationBinding
 import com.sougata.chatly.util.DecoratedViews
 import kotlinx.coroutines.launch
+import java.security.MessageDigest
+import java.util.UUID
 
 class AuthenticationFragment : Fragment() {
 
@@ -53,9 +56,16 @@ class AuthenticationFragment : Fragment() {
 
     private fun setupContinueWithGoogleButton() {
         this.binding.btnContinueWithGoogle.setOnClickListener {
+            val rawNonce = UUID.randomUUID().toString()
+            val bytes = rawNonce.toByteArray()
+            val messageDigest = MessageDigest.getInstance("SHA-256")
+            val digest = messageDigest.digest(bytes)
+            val hashedNonce = digest.fold("") { string, byte -> string + "%02x".format(byte) }
+
             val googleIdOption: GetGoogleIdOption = GetGoogleIdOption.Builder()
                 .setFilterByAuthorizedAccounts(false)
                 .setServerClientId(this.resources.getString(R.string.server_client_id))
+                .setNonce(hashedNonce)
                 .setAutoSelectEnabled(false)
                 .build()
 
@@ -76,7 +86,7 @@ class AuthenticationFragment : Fragment() {
                         GoogleIdTokenCredential.createFrom(credential.data)
                     val googleIdToken = googleIdTokenCredential.idToken
 
-                    authVM.loginWithGoogle(googleIdToken)
+                    authVM.loginWithGoogle(googleIdToken, rawNonce)
 
                 } catch (e: GetCredentialException) {
                     DecoratedViews.showSnackBar(
@@ -92,6 +102,7 @@ class AuthenticationFragment : Fragment() {
 
     private fun registerObservers() {
         this.authVM.loginWithGoogle.observe(this.viewLifecycleOwner) {
+            Log.d("TAG", it.toString())
             if (it.taskStatus == TaskStatus.STARTED) {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE

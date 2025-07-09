@@ -17,12 +17,12 @@ class AuthenticationVM(application: Application) : AndroidViewModel(application)
     private val _loginWithGoogle = MutableLiveData<TaskResult<User>>()
     val loginWithGoogle: LiveData<TaskResult<User>> = this._loginWithGoogle
 
-    fun loginWithGoogle(googleIdToken: String) {
+    fun loginWithGoogle(googleIdToken: String, rawNonce: String) {
 
         this._loginWithGoogle.value = TaskResult(null, TaskStatus.STARTED, "Login Started")
 
         this.viewModelScope.launch {
-            _loginWithGoogle.value = authRepo.loginWithGoogle(googleIdToken)
+            _loginWithGoogle.value = authRepo.loginWithGoogle(googleIdToken, rawNonce)
         }
     }
 
