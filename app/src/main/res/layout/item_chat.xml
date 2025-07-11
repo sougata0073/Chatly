@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:paddingStart="12dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?attr/selectableItemBackground"
+        android:paddingStart="20dp"
         android:paddingTop="15dp"
-        android:paddingBottom="15dp"
-        android:paddingEnd="12dp">
+        android:paddingEnd="20dp"
+        android:paddingBottom="15dp">
 
         <com.google.android.material.imageview.ShapeableImageView
             android:id="@+id/ivProfileImage"
@@ -19,83 +23,75 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:shapeAppearance="@style/circleImageView"
-            android:src="@drawable/ic_user" />
+            tools:src="@drawable/ic_user_placeholder" />
 
         <TextView
             android:id="@+id/tvName"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="16dp"
-            android:text="Sougata Saha"
+            android:layout_marginEnd="15dp"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/bw"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:ellipsize="end"
-            android:maxLines="1"
-            app:layout_constraintBottom_toTopOf="@id/tvUnreadMessage"
-            app:layout_constraintEnd_toStartOf="@id/guideLine"
+            app:layout_constraintBottom_toTopOf="@id/tvLastMessage"
+            app:layout_constraintEnd_toStartOf="@id/tvLastMessageDate"
             app:layout_constraintStart_toEndOf="@id/ivProfileImage"
             app:layout_constraintTop_toTopOf="@id/ivProfileImage"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="Sougata Saha" />
 
         <TextView
-            android:id="@+id/tvUnreadMessage"
+            android:id="@+id/tvLastMessage"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
             android:maxLines="1"
-            android:text="Great, thanks so much"
             android:textColor="@color/unread_message"
             android:textSize="12sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="@id/ivProfileImage"
             app:layout_constraintEnd_toEndOf="@id/tvName"
             app:layout_constraintStart_toStartOf="@id/tvName"
-            app:layout_constraintTop_toBottomOf="@id/tvName" />
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideLine"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintGuide_percent="0.8" />
+            app:layout_constraintTop_toBottomOf="@id/tvName"
+            tools:text="Great, thanks so much" />
 
         <TextView
-            android:id="@+id/tvLastMessageTime"
-            android:layout_width="0dp"
+            android:id="@+id/tvLastMessageDate"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
             android:ellipsize="end"
-            android:gravity="end"
+            android:maxLength="10"
             android:maxLines="1"
-            android:text="Yesterday"
             android:textColor="@color/unread_message"
             android:textSize="12sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tvNumberOfUnreadMessages"
+            app:layout_constraintBottom_toTopOf="@id/tvLastMessageTime"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/guideLine"
+            app:layout_constraintStart_toEndOf="@id/tvName"
             app:layout_constraintTop_toTopOf="@id/tvName"
-            app:layout_constraintVertical_chainStyle="spread_inside" />
+            app:layout_constraintVertical_chainStyle="spread"
+            tools:text="12-07-2025" />
 
         <TextView
-            android:id="@+id/tvNumberOfUnreadMessages"
+            android:id="@+id/tvLastMessageTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:background="@drawable/number_of_unread_messages_bg"
-            android:maxLength="3"
-            android:paddingStart="4dp"
-            android:paddingTop="2dp"
-            android:paddingEnd="4dp"
-            android:paddingBottom="2dp"
-            android:text="99+"
-            android:textColor="@color/white"
+            android:ellipsize="end"
+            android:maxLength="10"
+            android:maxLines="1"
+            android:textColor="@color/unread_message"
             android:textSize="12sp"
-            app:layout_constraintBottom_toBottomOf="@id/tvUnreadMessage"
-            app:layout_constraintEnd_toEndOf="@id/tvLastMessageTime"
+            android:textStyle="bold"
             app:layout_constraintHorizontal_bias="1"
-            app:layout_constraintStart_toStartOf="@id/tvLastMessageTime"
-            app:layout_constraintTop_toBottomOf="@id/tvLastMessageTime" />
+            app:layout_constraintStart_toStartOf="@id/tvLastMessageDate"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="@id/tvLastMessageDate"
+            app:layout_constraintTop_toBottomOf="@id/tvLastMessageDate"
+            app:layout_constraintVertical_chainStyle="spread_inside"
+            tools:text="21:15" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

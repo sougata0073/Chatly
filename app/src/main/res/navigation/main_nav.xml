@@ -6,7 +6,7 @@
     app:startDestination="@id/chatsHomeFragment">
     <fragment
         android:id="@+id/chatsHomeFragment"
-        android:name="com.sougata.chatly.features.chats.ChatsHomeFragment"
+        android:name="com.sougata.chatly.features.chats.ui.ChatsHomeFragment"
         android:label="fragment_chats_home"
         tools:layout="@layout/fragment_chats_home" />
     <fragment

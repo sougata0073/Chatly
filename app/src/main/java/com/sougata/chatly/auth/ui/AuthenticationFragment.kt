@@ -102,7 +102,7 @@ class AuthenticationFragment : Fragment() {
 
     private fun registerObservers() {
         this.authVM.loginWithGoogle.observe(this.viewLifecycleOwner) {
-            Log.d("TAG", it.toString())
+            Log.d("TAG", "Login with google: $it")
             if (it.taskStatus == TaskStatus.STARTED) {
 
                 this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE

@@ -5,6 +5,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class PrivateChat(
-    @SerialName("chat_id") val chatId: Long? = null,
-    @SerialName("other_user") val userUid: User? = null
+    @SerialName("chat_id") val id: Long? = null,
+    @SerialName("other_user") val otherUser: User? = null,
+    @SerialName("last_message") val lastMessage: PrivateMessage? = null
 )

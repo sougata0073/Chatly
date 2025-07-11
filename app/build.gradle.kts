@@ -75,8 +75,14 @@ dependencies {
     implementation("io.github.jan-tennert.supabase:auth-kt")
     // Storage
     implementation("io.github.jan-tennert.supabase:storage-kt")
-    // Ktor client
-    implementation("io.ktor:ktor-client-android:3.2.1")
+    // Realtime
+    implementation("io.github.jan-tennert.supabase:realtime-kt")
+
+    // Ktor
+    val ktorVersion = "3.2.1"
+    // This android ktor engine does not support websockets(Realtime work) so use okhttp engine
+    // implementation("io.ktor:ktor-client-android:$ktorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$ktorVersion") // Use okhttp engine
 
     // Credential Manager
     implementation("androidx.credentials:credentials:1.5.0")
@@ -95,4 +101,7 @@ dependencies {
 
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
+
+    // Java faker
+    implementation("com.github.javafaker:javafaker:1.0.2")
 }

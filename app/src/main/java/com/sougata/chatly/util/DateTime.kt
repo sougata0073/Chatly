@@ -1,6 +1,7 @@
 package com.sougata.chatly.util
 
 import com.sougata.chatly.common.Date
+import com.sougata.chatly.common.Time
 import java.time.Instant
 import java.time.OffsetDateTime
 import java.time.ZoneOffset
@@ -20,6 +21,16 @@ object DateTime {
         return Date(day, month, year)
     }
 
+    fun millisToTime(timeInMillis: Long): Time {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        return Time(hour, minute)
+    }
+
     fun millisToDateString(timeInMillis: Long): String {
         return this.millisToDate(timeInMillis).toString()
     }
@@ -31,6 +42,18 @@ object DateTime {
 
     fun isoTimestampToDate(isoTimestamp: String): Date {
         return this.millisToDate(this.isoTimestampToMillis(isoTimestamp))
+    }
+
+    fun isoTimestampToDateString(isoTimestamp: String): String {
+        return this.isoTimestampToDate(isoTimestamp).toString()
+    }
+
+    fun isoTimestampToTime(isoTimestamp: String): Time {
+        return this.millisToTime(this.isoTimestampToMillis(isoTimestamp))
+    }
+
+    fun isoTimestampToTimeString(isoTimestamp: String): String {
+        return this.isoTimestampToTime(isoTimestamp).toString()
     }
 
     fun millisToISOTimestampString(timeInMillis: Long): String {

@@ -3,6 +3,7 @@ package com.sougata.chatly.auth.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -77,6 +78,7 @@ class UserDetailsFormFragment : Fragment() {
 
     private fun setupObservers() {
         this.vm.updateUserDetails.observe(this.viewLifecycleOwner) {
+            Log.d("TAG", "Update user message: ${it.message}")
             if (it.taskStatus == TaskStatus.STARTED) {
 
                 this.binding.viewBlocker.progressBar.visibility = View.VISIBLE
@@ -108,6 +110,7 @@ class UserDetailsFormFragment : Fragment() {
             val genderString = this.vm.gender.value
             val dob = this.vm.dob
             val bioString = this.vm.bio.value
+            val profileImageUrl = this.vm.profileImageUrl.value
 
             if (nameString.isNullOrEmpty()) {
                 this.binding.nameLayout.error = "Name can't be empty"
@@ -125,18 +128,14 @@ class UserDetailsFormFragment : Fragment() {
             }
 
             val updatedUser = User(
-                id = null,
-                uid = this.previousUser.uid,
                 name = nameString,
-                email = null,
+                email = emailString,
                 phoneNumber = phoneNumberString,
                 gender = genderString,
                 dob = if (dob == null) null else DateTime.millisToISOTimestampString(dob),
                 bio = bioString,
                 location = null,
-                profileImageUrl = null,
-                createdAt = null,
-                isProfileUpdatedOnce = true
+                profileImageUrl = profileImageUrl
             )
 
             this.vm.updateUserDetails(updatedUser)

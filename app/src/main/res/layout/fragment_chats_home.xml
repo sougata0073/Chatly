@@ -7,20 +7,16 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@color/bw_background"
-        tools:context=".features.chats.ChatsHomeFragment">
+        tools:context=".features.chats.ui.ChatsHomeFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvChatList"
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:paddingStart="12dp"
-            android:paddingEnd="12dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:itemCount="10"
-            tools:listitem="@layout/item_chat" />
+            app:layout_constraintTop_toTopOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

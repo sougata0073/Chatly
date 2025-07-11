@@ -35,9 +35,7 @@ class AuthenticationRepository {
                     )
                 }
 
-                val user = db.rpc(
-                    "get_user_details", mapOf("_user_uid" to currentUser.id)
-                ).decodeSingleOrNull<User>()
+                val user = db.rpc("get_own_details").decodeSingleOrNull<User>()
 
                 if (user == null) {
                     return@withContext TaskResult(null, TaskStatus.FAILED, "User not found")
@@ -50,7 +48,6 @@ class AuthenticationRepository {
                 }
 
             } catch (e: Exception) {
-                e.printStackTrace()
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }
         }
@@ -59,7 +56,7 @@ class AuthenticationRepository {
         try {
 
             val data = db.rpc(
-                "update_user_details", mapOf("_new_user" to user)
+                "update_own_details", mapOf("_new_user" to user)
             ).data
 
             return@withContext TaskResult(

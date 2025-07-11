@@ -1,0 +1,80 @@
+package com.sougata.chatly.features.chats.ui
+
+import android.view.LayoutInflater
+import android.view.ViewGroup
+import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.sougata.chatly.R
+import com.sougata.chatly.data.models.PrivateChat
+import com.sougata.chatly.databinding.ItemChatBinding
+import com.sougata.chatly.features.chats.util.PrivateChatsDiffUtil
+import com.sougata.chatly.util.DateTime
+
+class ChatsListAdapter(
+    private var itemsList: MutableList<PrivateChat>
+) : RecyclerView.Adapter<ChatsListAdapter.MyViewHolder>() {
+
+    inner class MyViewHolder(private val binding: ItemChatBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        fun bind(pc: PrivateChat) {
+            Glide.with(this.binding.root)
+                .load(pc.otherUser?.profileImageUrl)
+                .error(R.drawable.ic_user_placeholder)
+                .placeholder(R.drawable.ic_user_placeholder)
+                .into(this.binding.ivProfileImage)
+
+            this.binding.tvName.text = pc.otherUser?.name
+            this.binding.tvLastMessage.text = pc.lastMessage?.text
+
+            val lastMessageTime = pc.lastMessage?.createdAt
+            if (lastMessageTime == null) {
+                this.binding.tvLastMessageDate.text = ""
+                this.binding.tvLastMessageTime.text = ""
+            } else {
+                this.binding.tvLastMessageDate.text =
+                    DateTime.isoTimestampToDateString(lastMessageTime)
+                this.binding.tvLastMessageTime.text =
+                    DateTime.isoTimestampToTimeString(lastMessageTime)
+            }
+        }
+    }
+
+    override fun onCreateViewHolder(
+        parent: ViewGroup,
+        viewType: Int
+    ): MyViewHolder {
+        val inflater = LayoutInflater.from(parent.context)
+
+        val binding = DataBindingUtil.inflate<ItemChatBinding>(
+            inflater,
+            R.layout.item_chat,
+            parent,
+            false
+        )
+
+        return MyViewHolder(binding)
+    }
+
+    override fun onBindViewHolder(
+        holder: MyViewHolder,
+        position: Int
+    ) {
+        holder.bind(this.itemsList[position])
+    }
+
+    override fun getItemCount(): Int {
+        return this.itemsList.size
+    }
+
+    fun setItems(newItemsList: List<PrivateChat>) {
+        val diffUtil = PrivateChatsDiffUtil(this.itemsList, newItemsList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        this.itemsList = newItemsList.toMutableList()
+//        Log.d("TAG", this.itemsList.toString())
+        diffResult.dispatchUpdatesTo(this)
+    }
+
+}
