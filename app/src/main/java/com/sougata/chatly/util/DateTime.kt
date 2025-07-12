@@ -31,6 +31,20 @@ object DateTime {
         return Time(hour, minute)
     }
 
+    fun millisToDateTime(timeInMillis: Long): Pair<Date, Time> {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = timeInMillis
+
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+
+        val hour = calendar.get(Calendar.HOUR_OF_DAY)
+        val minute = calendar.get(Calendar.MINUTE)
+
+        return Date(day, month, year) to Time(hour, minute)
+    }
+
     fun millisToDateString(timeInMillis: Long): String {
         return this.millisToDate(timeInMillis).toString()
     }
@@ -54,6 +68,18 @@ object DateTime {
 
     fun isoTimestampToTimeString(isoTimestamp: String): String {
         return this.isoTimestampToTime(isoTimestamp).toString()
+    }
+
+    fun isoTimestampToDateTime(isoTimestamp: String): Pair<Date, Time> {
+        return this.millisToDateTime(this.isoTimestampToMillis(isoTimestamp))
+    }
+
+    fun isoTimestampToDateTimeString(isoTimestamp: String): String {
+        val dateTime = this.isoTimestampToDateTime(isoTimestamp)
+        val date = dateTime.first
+        val time = dateTime.second
+
+        return "$date $time"
     }
 
     fun millisToISOTimestampString(timeInMillis: Long): String {

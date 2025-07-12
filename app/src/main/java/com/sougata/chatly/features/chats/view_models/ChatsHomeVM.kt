@@ -9,12 +9,10 @@ import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
+import com.sougata.chatly.data.models.PrivateChatDto
 import com.sougata.chatly.data.repositories.ChatsRepository
-import io.github.jan.supabase.realtime.PostgresAction
 import io.github.jan.supabase.realtime.broadcastFlow
 import io.github.jan.supabase.realtime.channel
-import io.github.jan.supabase.realtime.postgresChangeFlow
-import io.github.jan.supabase.realtime.realtime
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -40,7 +38,7 @@ class ChatsHomeVM : ViewModel() {
         this._chatsList.value = TaskResult(null, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
-            val list = chatsRepo.getPrivateChats(limit = limit, offset = offset)
+            val list = chatsRepo.getPrivateChats(PrivateChatDto(limit, offset))
             _chatsList.value = list
             offset += limit
         }
@@ -52,10 +50,11 @@ class ChatsHomeVM : ViewModel() {
                 val supabase = MySupabaseClient.getInstance()
 //                supabase.realtime.setAuth()
 
-                val channel = supabase.channel("private_chats:2af956bb-4047-4e41-bc8f-3e8b32765ac5"){
-                    // Setting private is very important to receive updates from a private channel else will not work
-                    this.isPrivate = true
-                }
+                val channel =
+                    supabase.channel("private_chats:2af956bb-4047-4e41-bc8f-3e8b32765ac5") {
+                        // Setting private is very important to receive updates from a private channel else will not work
+                        this.isPrivate = true
+                    }
                 // use event = "*" to listen all events
                 val changeFlow = channel.broadcastFlow<JsonObject>(event = "INSERT")
                 changeFlow.onEach {

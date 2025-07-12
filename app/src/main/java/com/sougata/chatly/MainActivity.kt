@@ -1,6 +1,5 @@
 package com.sougata.chatly
 
-import android.os.Build
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
@@ -9,8 +8,7 @@ import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.isGone
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
@@ -21,7 +19,7 @@ import com.sougata.chatly.util.DecoratedViews
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
-    private val binding get() = this._binding!!
+    val binding get() = this._binding!!
 
     private lateinit var searchViewEditText: EditText
 
@@ -30,12 +28,6 @@ class MainActivity : AppCompatActivity() {
         enableEdgeToEdge()
 
         this._binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
 
         this.setupBottomNav()
         this.setupSearchView()
@@ -53,6 +45,28 @@ class MainActivity : AppCompatActivity() {
             this.supportFragmentManager.findFragmentById(R.id.navHostMain) as NavHostFragment
         val navController = navHostFragment.navController
         this.binding.bottomNav.setupWithNavController(navController)
+
+        navController.addOnDestinationChangedListener { _, destination, _ ->
+            val id = destination.id
+
+            if (id == R.id.chatsHomeFragment ||
+                id == R.id.groupsHomeFragment ||
+                id == R.id.profileHomeFragment ||
+                id == R.id.moreHomeFragment
+            ) {
+                if (this.binding.toolBar.isGone) {
+                    this.binding.toolBar.visibility = View.VISIBLE
+                }
+
+                if (this.binding.bottomNav.isGone) {
+                    this.binding.bottomNav.visibility = View.VISIBLE
+                }
+
+                this.binding.root.background =
+                    AppCompatResources.getDrawable(this, R.drawable.main_activity_bg)
+            }
+
+        }
     }
 
     private fun setupSearchView() {
@@ -83,9 +97,7 @@ class MainActivity : AppCompatActivity() {
                 it
             )
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-                popupMenu.setForceShowIcon(true)
-            }
+            popupMenu.setForceShowIcon(true)
 
             popupMenu.setOnMenuItemClickListener { menuItem ->
                 when (menuItem.itemId) {

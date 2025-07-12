@@ -7,20 +7,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.common.TaskStatus
-import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.databinding.FragmentChatsHomeBinding
 import com.sougata.chatly.features.chats.view_models.ChatsHomeVM
 import com.sougata.chatly.util.DecoratedViews
-import io.github.jan.supabase.realtime.PostgresAction
-import io.github.jan.supabase.realtime.channel
-import io.github.jan.supabase.realtime.postgresChangeFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 
 class ChatsHomeFragment : Fragment() {
 
@@ -52,6 +44,12 @@ class ChatsHomeFragment : Fragment() {
         )
 
         this.registerObservers()
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+
+        this._binding = null
     }
 
     private fun registerObservers() {
