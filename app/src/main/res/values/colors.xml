@@ -19,4 +19,8 @@
     <color name="light_blue_dark">#40C4FF</color>
     <color name="user_register_header_bg_main">#16B2F8</color>
     <color name="user_register_header_bg_stroke">#ECF9FF</color>
+    <color name="message_screen_bg">#FFFFFF</color>
+    <color name="message_screen_content_bg">#F0F0F3</color>
+    <color name="message_input_box">#F0F0F3</color>
+    <color name="add_media_button">#FFFFFF</color>
 </resources>

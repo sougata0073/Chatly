@@ -10,4 +10,8 @@
     <color name="bottom_nav_bg">#393A4C</color>
     <color name="user_register_header_bg_main">#C4EDFF</color>
     <color name="user_register_header_bg_stroke">#2C2D3A</color>
+    <color name="message_screen_bg">#292929</color>
+    <color name="message_screen_content_bg">#2C2D3A</color>
+    <color name="message_input_box">#545454</color>
+    <color name="add_media_button">#3E3E3E</color>
 </resources>
