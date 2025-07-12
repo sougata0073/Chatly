@@ -47,15 +47,12 @@ class PrivateMessagesAdapter(
                         tvDateTime.text = DateTime.isoTimestampToDateTimeString(createdAt)
                     }
                 }
-            } else if (this.binding is ItemListLoadingBinding) {
-                Log.d("TAGLL", "Loader")
             }
         }
     }
 
     override fun getItemViewType(position: Int): Int {
         val pm = this.itemsList[position]
-        Log.d("TAGLL", "$pm")
         return if (pm.id == null) {
             return this.viewTypeLoader
         } else {
@@ -105,6 +102,11 @@ class PrivateMessagesAdapter(
         val diffResult = DiffUtil.calculateDiff(diffUtil)
         this.itemsList = newItemsList.toMutableList()
         diffResult.dispatchUpdatesTo(this)
+    }
+
+    fun insertItemAtFirst(pmw: PrivateMessageWrapper) {
+        this.itemsList.add(0, pmw)
+        this.notifyItemInserted(0)
     }
 
     fun showItemLoader() {

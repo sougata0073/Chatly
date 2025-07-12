@@ -1,7 +1,9 @@
 package com.sougata.chatly.features.chats.ui
 
+import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -58,14 +60,14 @@ class PrivateMessagesFragment : Fragment() {
             requireArguments().getParcelable(Keys.PRIVATE_CHAT)
         }!!
 
-        this.vm =
-            ViewModelProvider(
-                this,
-                PrivateMessagesVMFactory(this.privateChat)
-            )[PrivateMessagesVM::class.java]
+        this.vm = ViewModelProvider(
+            this,
+            PrivateMessagesVMFactory(this.privateChat)
+        )[PrivateMessagesVM::class.java]
 
         this.setupToolBar()
         this.setupMessagesRecyclerView()
+        this.setupSendButton()
         this.registerObservers()
     }
 
@@ -105,36 +107,64 @@ class PrivateMessagesFragment : Fragment() {
         })
     }
 
+    private fun setupSendButton() {
+        this.binding.btnSendMessage.setOnClickListener {
+            val text = this.binding.etMessageBox.text.toString()
+
+            if(text.isNotEmpty()) {
+                this.vm.insertMessage(text, null, null)
+            }
+        }
+    }
+
     private fun registerObservers() {
         this.vm.messagesList.observe(this.viewLifecycleOwner) {
             if (it.taskStatus == TaskStatus.STARTED) {
 
-//                this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE
-
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
-
-//                this.binding.viewBlocker.parentLayout.visibility = View.GONE
-
-//                var s = ""
-//                for(item in it.result!!) {
-//                    s += "${item.id} "
-//                }
-//                Log.d("TAGRV", "Ids; $s")
 
                 this.recyclerViewAdapter.setItems(it.result ?: emptyList())
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
-
-//                this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 DecoratedViews.showSnackBar(
                     requireView(),
                     null,
                     it.message,
                     Snackbar.LENGTH_LONG
                 )
-
             }
+        }
 
+        this.vm.messageSent.observe(this.viewLifecycleOwner) {
+//            Log.d("TAGXX", it.message)
+            if (it.taskStatus == TaskStatus.STARTED) {
+
+            } else if (it.taskStatus == TaskStatus.COMPLETED) {
+
+                val privateMessageWrapper = it.result
+
+                if (privateMessageWrapper != null) {
+                    this.binding.etMessageBox.text.clear()
+                    this.recyclerViewAdapter.insertItemAtFirst(privateMessageWrapper)
+                    this.binding.rvMessages.scrollToPosition(0)
+
+                } else {
+                    DecoratedViews.showSnackBar(
+                        requireView(),
+                        null,
+                        "Something went wrong",
+                        Snackbar.LENGTH_LONG
+                    )
+                }
+
+            } else if (it.taskStatus == TaskStatus.FAILED) {
+                DecoratedViews.showSnackBar(
+                    requireView(),
+                    null,
+                    it.message,
+                    Snackbar.LENGTH_LONG
+                )
+            }
         }
     }
 
