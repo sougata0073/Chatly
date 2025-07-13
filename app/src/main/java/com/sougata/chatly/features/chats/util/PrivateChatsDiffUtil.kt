@@ -26,6 +26,10 @@ class PrivateChatsDiffUtil(
         oldItemPosition: Int,
         newItemPosition: Int
     ): Boolean {
-        return this.oldList[oldItemPosition].otherUser == this.newList[newItemPosition].otherUser
+        return when {
+            this.oldList[oldItemPosition].id != this.newList[newItemPosition].id -> false
+            this.oldList[oldItemPosition].lastMessage != this.newList[newItemPosition].lastMessage -> false
+            else -> true
+        }
     }
 }

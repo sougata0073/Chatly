@@ -5,9 +5,9 @@ import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.data.models.PrivateChatDto
+import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.data.models.PrivateMessageGetDto
 import com.sougata.chatly.data.models.PrivateMessagePostDto
-import com.sougata.chatly.data.models.PrivateMessageWrapper
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
@@ -30,12 +30,29 @@ class ChatsRepository {
 
         }
 
-    suspend fun getPrivateMessages(privateMessageGetDto: PrivateMessageGetDto): TaskResult<List<PrivateMessageWrapper>> =
+    suspend fun getPrivateChat(privateChatId: Long): TaskResult<PrivateChat> =
+        withContext(Dispatchers.IO) {
+
+            try {
+                val privateChat = db.rpc(
+                    "get_private_chat",
+                    mapOf("_private_chat_id" to privateChatId)
+                )
+                    .decodeSingle<PrivateChat>()
+
+                return@withContext TaskResult(privateChat, TaskStatus.COMPLETED, "Task Completed")
+            } catch (e: Exception) {
+                return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
+            }
+
+        }
+
+    suspend fun getPrivateMessages(privateMessageGetDto: PrivateMessageGetDto): TaskResult<List<PrivateMessage>> =
         withContext(Dispatchers.IO) {
             try {
 
                 val list = db.rpc("get_private_chat_messages", privateMessageGetDto)
-                    .decodeList<PrivateMessageWrapper>()
+                    .decodeList<PrivateMessage>()
 
                 return@withContext TaskResult(list, TaskStatus.COMPLETED, "Task Completed")
             } catch (e: Exception) {
@@ -43,12 +60,12 @@ class ChatsRepository {
             }
         }
 
-    suspend fun insertPrivateMessage(privateMessagePostDto: PrivateMessagePostDto): TaskResult<PrivateMessageWrapper> =
+    suspend fun insertPrivateMessage(privateMessagePostDto: PrivateMessagePostDto): TaskResult<PrivateMessage> =
         withContext(Dispatchers.IO) {
             try {
 
                 val pmw = db.rpc("insert_private_message", privateMessagePostDto)
-                    .decodeSingle<PrivateMessageWrapper>()
+                    .decodeSingle<PrivateMessage>()
 
                 return@withContext TaskResult(pmw, TaskStatus.COMPLETED, "Task Completed")
 

@@ -7,8 +7,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="4dp"
-        android:layout_marginBottom="4dp"
         android:layout_marginEnd="15dp"
+        android:layout_marginBottom="4dp"
         android:gravity="end">
 
         <LinearLayout
@@ -42,6 +42,16 @@
                 android:textColor="@color/white"
                 android:textSize="12sp"
                 tools:text="12-07-2025 10:25" />
+
+            <TextView
+                android:id="@+id/tvIsTextEdited"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="end"
+                tools:text="Edited"
+                android:layout_marginTop="3dp"
+                android:textColor="@color/white"
+                android:textSize="11sp" />
 
         </LinearLayout>
     </LinearLayout>

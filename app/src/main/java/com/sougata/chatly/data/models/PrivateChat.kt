@@ -10,5 +10,5 @@ import kotlinx.serialization.Serializable
 data class PrivateChat(
     @SerialName("private_chat_id") val id: Long? = null,
     @SerialName("other_user") val otherUser: User? = null,
-    @SerialName("last_message") val lastMessage: PrivateMessage? = null
+    @SerialName("last_message") var lastMessage: PrivateMessage? = null
 ): Parcelable

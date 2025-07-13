@@ -1,9 +1,7 @@
 package com.sougata.chatly.features.chats.ui
 
-import android.graphics.Canvas
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
@@ -38,6 +37,7 @@ class PrivateMessagesFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {
+
         this._binding = FragmentPrivateMessagesBinding.inflate(inflater, container, false)
 
         (requireActivity() as MainActivity).binding.apply {
@@ -65,10 +65,28 @@ class PrivateMessagesFragment : Fragment() {
             PrivateMessagesVMFactory(this.privateChat)
         )[PrivateMessagesVM::class.java]
 
+        this.setupUI()
         this.setupToolBar()
         this.setupMessagesRecyclerView()
         this.setupSendButton()
         this.registerObservers()
+    }
+
+    private fun setupUI() {
+        Glide.with(this.requireContext())
+            .load(this.privateChat.otherUser?.profileImageUrl)
+            .placeholder(R.drawable.ic_user_placeholder)
+            .error(R.drawable.ic_user_placeholder)
+            .into(this.binding.ivOtherUserProfileImage)
+
+        this.binding.apply {
+            tvOtherUserName.text = privateChat.otherUser?.name
+
+            val phoneNumber = privateChat.otherUser?.phoneNumber
+            val email = privateChat.otherUser?.email
+
+            tvOtherUserContact.text = email ?: phoneNumber ?: "No contact available"
+        }
     }
 
     private fun setupToolBar() {
@@ -111,7 +129,7 @@ class PrivateMessagesFragment : Fragment() {
         this.binding.btnSendMessage.setOnClickListener {
             val text = this.binding.etMessageBox.text.toString()
 
-            if(text.isNotEmpty()) {
+            if (text.isNotEmpty()) {
                 this.vm.insertMessage(text, null, null)
             }
         }
@@ -136,16 +154,15 @@ class PrivateMessagesFragment : Fragment() {
         }
 
         this.vm.messageSent.observe(this.viewLifecycleOwner) {
-//            Log.d("TAGXX", it.message)
             if (it.taskStatus == TaskStatus.STARTED) {
 
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
-                val privateMessageWrapper = it.result
+                val privateMessage = it.result
 
-                if (privateMessageWrapper != null) {
+                if (privateMessage != null) {
                     this.binding.etMessageBox.text.clear()
-                    this.recyclerViewAdapter.insertItemAtFirst(privateMessageWrapper)
+                    this.recyclerViewAdapter.insertItemAtFirst(privateMessage)
                     this.binding.rvMessages.scrollToPosition(0)
 
                 } else {
@@ -164,6 +181,25 @@ class PrivateMessagesFragment : Fragment() {
                     it.message,
                     Snackbar.LENGTH_LONG
                 )
+            }
+        }
+
+        this.vm.messageReceived.observe(this.viewLifecycleOwner) {
+            if (it != null) {
+                this.recyclerViewAdapter.insertItemAt(it.first, it.second)
+                this.binding.rvMessages.scrollToPosition(it.first)
+            }
+        }
+
+        this.vm.messageUpdated.observe(this.viewLifecycleOwner) {
+            if (it != null) {
+                this.recyclerViewAdapter.updateItemAt(it.first, it.second)
+            }
+        }
+
+        this.vm.messageDeleted.observe(this.viewLifecycleOwner) {
+            if (it != null) {
+                this.recyclerViewAdapter.removeItemAt(it.first)
             }
         }
     }

@@ -1,7 +1,6 @@
 package com.sougata.chatly.features.chats.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -54,20 +53,14 @@ class ChatsHomeFragment : Fragment() {
 
     private fun registerObservers() {
         this.vm.chatsList.observe(this.viewLifecycleOwner) {
-            Log.d("TAG", "Chats list: $it")
             if (it.taskStatus == TaskStatus.STARTED) {
 
-//                this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE
-
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
-
-//                this.binding.viewBlocker.parentLayout.visibility = View.GONE
 
                 this.recyclerViewAdapter.setItems(it.result ?: emptyList())
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
 
-//                this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 DecoratedViews.showSnackBar(
                     requireView(),
                     null,
@@ -75,6 +68,25 @@ class ChatsHomeFragment : Fragment() {
                     Snackbar.LENGTH_LONG
                 )
 
+            }
+        }
+
+        this.vm.messageReceived.observe(this.viewLifecycleOwner) {
+            if (it != null) {
+                this.recyclerViewAdapter.removeItemAt(it.first)
+                this.recyclerViewAdapter.insertItemAtFirst(it.second)
+            }
+        }
+
+        this.vm.messageUpdated.observe(this.viewLifecycleOwner) {
+            if(it != null) {
+                this.recyclerViewAdapter.updateItemAt(it.first, it.second)
+            }
+        }
+
+        this.vm.messageDeleted.observe(this.viewLifecycleOwner) {
+            if (it != null) {
+                this.recyclerViewAdapter.updateItemAt(it.first, it.second)
             }
         }
     }
