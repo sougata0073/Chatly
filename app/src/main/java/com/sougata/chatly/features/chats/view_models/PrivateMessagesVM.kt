@@ -16,6 +16,7 @@ import com.sougata.chatly.data.repositories.ChatsRepository
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.realtime.broadcastFlow
 import io.github.jan.supabase.realtime.channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -46,6 +47,7 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
     private val supabase = MySupabaseClient.getInstance()
     val currentUserId = this.supabase.auth.currentUserOrNull()!!.id
 
+    var isFirstTimeLoadingMessages = true
     var noMoreMessages = false
 
     init {
@@ -60,6 +62,10 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
         this._messagesList.value = TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
+            if(isFirstTimeLoadingMessages) {
+                delay(200)
+                isFirstTimeLoadingMessages = false
+            }
             val result =
                 chatsRepo.getPrivateMessages(PrivateMessageGetDto(privateChat.id!!, limit, offset))
 

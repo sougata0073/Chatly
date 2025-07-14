@@ -40,17 +40,6 @@ class PrivateMessagesFragment : Fragment() {
 
     private val currentUserId = MySupabaseClient.getInstance().auth.currentUserOrNull()!!.id
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-
-        (requireActivity() as MainActivity).binding.apply {
-            root.background =
-                AppCompatResources.getDrawable(requireContext(), R.color.message_screen_bg)
-            toolBar.visibility = View.GONE
-            bottomNav.visibility = View.GONE
-        }
-    }
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
     ): View? {

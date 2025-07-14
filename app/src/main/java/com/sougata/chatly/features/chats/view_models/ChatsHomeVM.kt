@@ -50,6 +50,7 @@ class ChatsHomeVM : ViewModel() {
     }
 
     var noMoreChats = false
+    var isSearchViewExpanded = false
 
     init {
         this._chatsList.value = TaskResult(mutableListOf(), TaskStatus.NONE, "Initialising")

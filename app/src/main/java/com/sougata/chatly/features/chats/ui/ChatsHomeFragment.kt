@@ -4,14 +4,18 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
+import com.sougata.chatly.R
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.databinding.FragmentChatsHomeBinding
 import com.sougata.chatly.features.chats.view_models.ChatsHomeVM
+import com.sougata.chatly.features.discover.DiscoverButtonClickHandler
 import com.sougata.chatly.util.DecoratedViews
 
 class ChatsHomeFragment : Fragment() {
@@ -36,6 +40,7 @@ class ChatsHomeFragment : Fragment() {
 
         this.vm = ViewModelProvider(this)[ChatsHomeVM::class.java]
 
+        this.setupToolBar()
         this.setupRecyclerView()
         this.registerObservers()
     }
@@ -44,6 +49,49 @@ class ChatsHomeFragment : Fragment() {
         super.onDestroyView()
 
         this._binding = null
+    }
+
+    private fun setupToolBar() {
+        this.binding.incToolBar.tvToolbarHeader.visibility = if (this.vm.isSearchViewExpanded) {
+            View.GONE
+        } else {
+            View.VISIBLE
+        }
+        this.binding.incToolBar.apply {
+
+            btnAdd.setOnClickListener(DiscoverButtonClickHandler(btnAdd, requireContext()))
+
+            searchView.apply {
+                val searchViewEditText =
+                    this.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
+
+                searchViewEditText.apply {
+                    setTextColor(
+                        AppCompatResources.getColorStateList(
+                            requireContext(),
+                            R.color.black
+                        )
+                    )
+                    hint = "Search"
+                    setHintTextColor(
+                        AppCompatResources.getColorStateList(
+                            requireContext(),
+                            R.color.grey
+                        )
+                    )
+                }
+
+                setOnSearchClickListener {
+                    binding.incToolBar.tvToolbarHeader.visibility = View.GONE
+                    vm.isSearchViewExpanded = true
+                }
+                setOnCloseListener {
+                    binding.incToolBar.tvToolbarHeader.visibility = View.VISIBLE
+                    vm.isSearchViewExpanded = false
+                    false
+                }
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -56,7 +104,7 @@ class ChatsHomeFragment : Fragment() {
             )
         }
 
-        this.binding.rvChatList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+        this.binding.rvChatList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             val layoutManager = binding.rvChatList.layoutManager as LinearLayoutManager
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)

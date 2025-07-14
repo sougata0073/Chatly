@@ -7,6 +7,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:fitsSystemWindows="true"
         android:background="@color/message_screen_bg"
         tools:context=".features.chats.ui.PrivateMessagesFragment">
 
@@ -14,6 +15,7 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="?attr/actionBarSize"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
@@ -38,18 +40,17 @@
                 android:id="@+id/ivOtherUserProfileImage"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
-                tools:src="@drawable/ic_user_placeholder"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                app:shapeAppearance="@style/circleImageView" />
+                app:shapeAppearance="@style/circleImageView"
+                tools:src="@drawable/ic_user_placeholder" />
 
             <TextView
                 android:id="@+id/tvOtherUserName"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="16dp"
-                tools:text="Sougata Saha"
                 android:textColor="@color/bw"
                 android:textSize="16sp"
                 android:textStyle="bold"
@@ -57,19 +58,20 @@
                 app:layout_constraintEnd_toStartOf="@id/btnVideoCall"
                 app:layout_constraintStart_toEndOf="@+id/ivOtherUserProfileImage"
                 app:layout_constraintTop_toTopOf="@id/ivOtherUserProfileImage"
-                app:layout_constraintVertical_chainStyle="spread_inside" />
+                app:layout_constraintVertical_chainStyle="spread_inside"
+                tools:text="Sougata Saha" />
 
             <TextView
                 android:id="@+id/tvOtherUserContact"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                tools:text="6296320657"
                 android:textColor="@color/grey"
                 android:textSize="12sp"
                 app:layout_constraintBottom_toBottomOf="@id/ivOtherUserProfileImage"
                 app:layout_constraintEnd_toEndOf="@id/tvOtherUserName"
                 app:layout_constraintStart_toStartOf="@id/tvOtherUserName"
-                app:layout_constraintTop_toBottomOf="@id/tvOtherUserName" />
+                app:layout_constraintTop_toBottomOf="@id/tvOtherUserName"
+                tools:text="6296320657" />
 
             <ImageButton
                 android:id="@+id/btnVideoCall"
