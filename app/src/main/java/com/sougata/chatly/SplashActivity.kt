@@ -1,5 +1,6 @@
 package com.sougata.chatly
 
+import android.annotation.SuppressLint
 import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
@@ -10,9 +11,9 @@ import androidx.lifecycle.lifecycleScope
 import com.sougata.chatly.auth.AuthenticationActivity
 import com.sougata.chatly.data.MySupabaseClient
 import io.github.jan.supabase.auth.auth
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
+@SuppressLint("CustomSplashScreen")
 class SplashActivity : AppCompatActivity() {
 
     private val supabase = MySupabaseClient.getInstance()
@@ -25,7 +26,7 @@ class SplashActivity : AppCompatActivity() {
 
         this.setContentView(R.layout.activity_splash)
 
-        actionBar?.hide()
+        this.actionBar?.hide()
 
         this.lifecycleScope.launch {
             // This ensures authentication is properly initialized
@@ -38,17 +39,16 @@ class SplashActivity : AppCompatActivity() {
                 R.anim.fade_out_exit
             ).toBundle()
 
-            if (currentUser == null) {
-                startActivity(
-                    Intent(this@SplashActivity, AuthenticationActivity::class.java),
-                    activityOptionsBundle
-                )
+            val activityClass = if (currentUser == null) {
+                AuthenticationActivity::class.java
             } else {
-                startActivity(
-                    Intent(this@SplashActivity, MainActivity::class.java),
-                    activityOptionsBundle
-                )
+                MainActivity::class.java
             }
+
+            startActivity(
+                Intent(this@SplashActivity, activityClass),
+                activityOptionsBundle
+            )
 
             finishAffinity()
         }

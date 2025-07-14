@@ -35,6 +35,7 @@ class PrivateMessagesAdapter(
                 this.binding.apply {
                     tvText.text = pmw.id.toString() + " " + pmw.text
                     val createdAt = pmw.createdAt
+
                     if (createdAt != null) {
                         tvDateTime.text = DateTime.isoTimestampToDateTimeString(createdAt)
                     }
@@ -138,11 +139,28 @@ class PrivateMessagesAdapter(
         this.notifyItemChanged(position)
     }
 
+    fun updateItemById(id: Long, pmw: PrivateMessage) {
+        this.hideItemLoader()
+
+        val index = this.itemsList.indexOfFirst { it.id == id }
+        if (index != -1) {
+            this.updateItemAt(index, pmw)
+        }
+    }
+
     fun removeItemAt(position: Int) {
         this.hideItemLoader()
 
         this.itemsList.removeAt(position)
         this.notifyItemRemoved(position)
+    }
+
+    fun getFirstItemId(): Long? {
+        return if (this.itemsList.isEmpty()) {
+            null
+        } else {
+            this.itemsList[0].id
+        }
     }
 
     fun showItemLoader() {

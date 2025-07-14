@@ -12,7 +12,6 @@ import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.PrivateChat
-import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.ItemChatBinding
 import com.sougata.chatly.features.chats.util.PrivateChatsDiffUtil
 import com.sougata.chatly.util.DateTime
@@ -34,7 +33,8 @@ class ChatsListAdapter(
                 .into(this.binding.ivProfileImage)
 
             this.binding.tvName.text = pc.otherUser?.name
-            this.binding.tvLastMessage.text = pc.lastMessage?.id.toString() + " " + pc.lastMessage?.text
+            this.binding.tvLastMessage.text =
+                pc.lastMessage?.id.toString() + " " + pc.lastMessage?.text
 
             val lastMessageTime = pc.lastMessage?.createdAt
             if (lastMessageTime == null) {
@@ -48,7 +48,6 @@ class ChatsListAdapter(
             }
 
             this.binding.root.setOnClickListener {
-                Log.d("Click", "$pc")
                 val bundle = Bundle().apply {
                     putParcelable(Keys.PRIVATE_CHAT, pc)
                 }

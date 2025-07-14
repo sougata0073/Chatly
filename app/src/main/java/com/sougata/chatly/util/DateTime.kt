@@ -87,4 +87,12 @@ object DateTime {
             .atOffset(ZoneOffset.UTC)
             .format(DateTimeFormatter.ISO_OFFSET_DATE_TIME)
     }
+
+    fun getCurrentTimeMillis(): Long {
+        return System.currentTimeMillis()
+    }
+
+    fun getCurrentISOTimestamp(): String {
+        return this.millisToISOTimestampString(this.getCurrentTimeMillis())
+    }
 }

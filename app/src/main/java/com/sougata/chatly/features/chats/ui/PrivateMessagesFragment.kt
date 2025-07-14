@@ -17,11 +17,15 @@ import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.common.TaskStatus
+import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
+import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.FragmentPrivateMessagesBinding
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVM
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVMFactory
+import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.DecoratedViews
+import io.github.jan.supabase.auth.auth
 
 class PrivateMessagesFragment : Fragment() {
 
@@ -34,11 +38,10 @@ class PrivateMessagesFragment : Fragment() {
 
     private lateinit var recyclerViewAdapter: PrivateMessagesAdapter
 
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
-    ): View? {
+    private val currentUserId = MySupabaseClient.getInstance().auth.currentUserOrNull()!!.id
 
-        this._binding = FragmentPrivateMessagesBinding.inflate(inflater, container, false)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         (requireActivity() as MainActivity).binding.apply {
             root.background =
@@ -46,6 +49,13 @@ class PrivateMessagesFragment : Fragment() {
             toolBar.visibility = View.GONE
             bottomNav.visibility = View.GONE
         }
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
+    ): View? {
+
+        this._binding = FragmentPrivateMessagesBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -128,9 +138,24 @@ class PrivateMessagesFragment : Fragment() {
     private fun setupSendButton() {
         this.binding.btnSendMessage.setOnClickListener {
             val text = this.binding.etMessageBox.text.toString()
+            val receiverId = this.privateChat.otherUser?.id
+
+            val tempId = this.recyclerViewAdapter.getFirstItemId()?.plus(1L) ?: 0L
+            val tempPrivateMessage = PrivateMessage(
+                id = tempId,
+                text = text,
+                senderId = this.currentUserId,
+                receiverId = receiverId,
+                mediaType = null,
+                mediaUrl = null,
+                createdAt = DateTime.getCurrentISOTimestamp()
+            )
+            this.recyclerViewAdapter.insertItemAtFirst(tempPrivateMessage)
+            this.binding.rvMessages.scrollToPosition(0)
+            this.binding.etMessageBox.text.clear()
 
             if (text.isNotEmpty()) {
-                this.vm.insertMessage(text, null, null)
+                this.vm.insertMessage(tempPrivateMessage)
             }
         }
     }
@@ -158,21 +183,10 @@ class PrivateMessagesFragment : Fragment() {
 
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
-                val privateMessage = it.result
+                val tempId = it.result!!.first
+                val privateMessage = it.result.second
 
-                if (privateMessage != null) {
-                    this.binding.etMessageBox.text.clear()
-                    this.recyclerViewAdapter.insertItemAtFirst(privateMessage)
-                    this.binding.rvMessages.scrollToPosition(0)
-
-                } else {
-                    DecoratedViews.showSnackBar(
-                        requireView(),
-                        null,
-                        "Something went wrong",
-                        Snackbar.LENGTH_LONG
-                    )
-                }
+                this.recyclerViewAdapter.updateItemById(tempId, privateMessage)
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
                 DecoratedViews.showSnackBar(
@@ -186,7 +200,7 @@ class PrivateMessagesFragment : Fragment() {
 
         this.vm.messageReceived.observe(this.viewLifecycleOwner) {
             if (it != null) {
-                this.recyclerViewAdapter.insertItemAt(it.first, it.second)
+                this.recyclerViewAdapter.insertItemAtFirst(it.second)
                 this.binding.rvMessages.scrollToPosition(it.first)
             }
         }

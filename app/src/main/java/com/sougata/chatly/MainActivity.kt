@@ -3,6 +3,7 @@ package com.sougata.chatly
 import android.os.Bundle
 import android.view.ContextThemeWrapper
 import android.view.View
+import android.view.animation.AnimationUtils
 import android.widget.EditText
 import android.widget.PopupMenu
 import androidx.activity.enableEdgeToEdge
@@ -65,7 +66,6 @@ class MainActivity : AppCompatActivity() {
                 this.binding.root.background =
                     AppCompatResources.getDrawable(this, R.drawable.main_activity_bg)
             }
-
         }
     }
 

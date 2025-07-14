@@ -16,6 +16,7 @@ import com.sougata.chatly.data.repositories.ChatsRepository
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.realtime.broadcastFlow
 import io.github.jan.supabase.realtime.channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -30,8 +31,8 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
     private val _messagesList = MutableLiveData<TaskResult<MutableList<PrivateMessage>>>()
     val messagesList: LiveData<TaskResult<MutableList<PrivateMessage>>> = this._messagesList
 
-    private val _messageSent = MutableLiveData<TaskResult<PrivateMessage>>()
-    val messageSent: LiveData<TaskResult<PrivateMessage>> = this._messageSent
+    private val _messageSent = MutableLiveData<TaskResult<Pair<Long, PrivateMessage>>>()
+    val messageSent: LiveData<TaskResult<Pair<Long, PrivateMessage>>> = this._messageSent
 
     private val _messageReceived = MutableLiveData<Pair<Int, PrivateMessage>>()
     val messageReceived: LiveData<Pair<Int, PrivateMessage>> = this._messageReceived
@@ -77,11 +78,13 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
         }
     }
 
-    fun insertMessage(text: String?, mediaType: String?, mediaUrl: String?) {
+    fun insertMessage(tempPrivateMessage: PrivateMessage) {
 
         this._messageSent.value = TaskResult(null, TaskStatus.STARTED, "Task Started")
 
         val receiverId = this.privateChat.otherUser?.id
+        val prevList = _messagesList.value?.result!!
+        prevList.add(0, tempPrivateMessage)
 
         if (receiverId == null) {
             this._messageSent.value =
@@ -90,21 +93,27 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
         }
 
         this.viewModelScope.launch {
+            delay(5000)
             val result = chatsRepo.insertPrivateMessage(
                 PrivateMessagePostDto(
                     privateChat.id!!,
                     receiverId,
-                    text,
-                    mediaType,
-                    mediaUrl
+                    tempPrivateMessage.text,
+                    tempPrivateMessage.mediaType,
+                    tempPrivateMessage.mediaUrl
                 )
             )
 
-            val pm = result.result
-            if (pm != null) {
-                _messagesList.value?.result?.add(0, pm)
-            }
-            _messageSent.value = result
+            val fetchedPrivateMessages = result.result!!
+            val updateIndex = prevList.indexOfFirst { it.id == tempPrivateMessage.id }
+            prevList[updateIndex] = fetchedPrivateMessages
+
+            _messageSent.value =
+                TaskResult(
+                    tempPrivateMessage.id!! to fetchedPrivateMessages,
+                    result.taskStatus,
+                    result.message
+                )
         }
     }
 
