@@ -38,8 +38,8 @@ class ChatsHomeVM : ViewModel() {
     private val _messageUpdated = MutableLiveData<Pair<Int, PrivateChat>>()
     val messageUpdated: LiveData<Pair<Int, PrivateChat>> = this._messageUpdated
 
-    private val _messageDeleted = MutableLiveData<Pair<Int, PrivateChat>>()
-    val messageDeleted: LiveData<Pair<Int, PrivateChat>> = this._messageDeleted
+    private val _messageDeleted = MutableLiveData<Pair<Int, PrivateChat?>>()
+    val messageDeleted: LiveData<Pair<Int, PrivateChat?>> = this._messageDeleted
 
     private val chatsRepo = ChatsRepository()
     private val supabase = MySupabaseClient.getInstance()
@@ -59,7 +59,7 @@ class ChatsHomeVM : ViewModel() {
     }
 
     fun loadPrivateChats() {
-        val prevList = _chatsList.value?.result
+        val prevList = this._chatsList.value?.result
         this._chatsList.value = TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
@@ -80,9 +80,8 @@ class ChatsHomeVM : ViewModel() {
 
     private fun subscribeToPrivateMessagesChannel() {
 
-        val broadcastFlow = messageChannel.broadcastFlow<JsonObject>("*")
+        val broadcastFlow = this.messageChannel.broadcastFlow<JsonObject>("*")
         broadcastFlow.onEach {
-            Log.d("TAGZZ", it.toString())
             this.onMessageBroadcast(it)
         }.launchIn(this.viewModelScope)
 
@@ -128,8 +127,6 @@ class ChatsHomeVM : ViewModel() {
             this._messageReceived.value = indexOfChat to removedChat
             this._messageReceived.value = null
         } else {
-            // Means a new chat is needed to inserted at the start of the list
-            // so fetch new chat with id = newPm.private_chat_id from server
             this.viewModelScope.launch {
                 val result = chatsRepo.getPrivateChat(newPm.privateChatId!!)
                 if (result.taskStatus == TaskStatus.COMPLETED) {
@@ -138,8 +135,9 @@ class ChatsHomeVM : ViewModel() {
 
                     _messageReceived.value = indexOfChat to fetchedChat
                     _messageReceived.value = null
+
+                    offset++
                 }
-                offset++
             }
         }
     }
@@ -167,6 +165,9 @@ class ChatsHomeVM : ViewModel() {
                     prevList[indexOfChat] = result.result!!
 
                     _messageDeleted.value = indexOfChat to prevList[indexOfChat]
+                    _messageDeleted.value = null
+                } else if (result.taskStatus == TaskStatus.FAILED) {
+                    _messageDeleted.value = indexOfChat to null
                     _messageDeleted.value = null
                 }
             }

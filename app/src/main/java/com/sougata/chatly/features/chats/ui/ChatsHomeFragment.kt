@@ -73,20 +73,27 @@ class ChatsHomeFragment : Fragment() {
 
         this.vm.messageReceived.observe(this.viewLifecycleOwner) {
             if (it != null) {
-                this.recyclerViewAdapter.removeItemAt(it.first)
+                if (it.first != -1) {
+                    this.recyclerViewAdapter.removeItemAt(it.first)
+                }
                 this.recyclerViewAdapter.insertItemAtFirst(it.second)
             }
         }
 
         this.vm.messageUpdated.observe(this.viewLifecycleOwner) {
-            if(it != null) {
+            if (it != null) {
                 this.recyclerViewAdapter.updateItemAt(it.first, it.second)
             }
         }
 
         this.vm.messageDeleted.observe(this.viewLifecycleOwner) {
             if (it != null) {
-                this.recyclerViewAdapter.updateItemAt(it.first, it.second)
+                val pc = it.second
+                if (pc != null) {
+                    this.recyclerViewAdapter.updateItemAt(it.first, pc)
+                } else {
+                    this.recyclerViewAdapter.removeItemAt(it.first)
+                }
             }
         }
     }
