@@ -93,7 +93,6 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
         }
 
         this.viewModelScope.launch {
-            delay(5000)
             val result = chatsRepo.insertPrivateMessage(
                 PrivateMessagePostDto(
                     privateChat.id!!,
