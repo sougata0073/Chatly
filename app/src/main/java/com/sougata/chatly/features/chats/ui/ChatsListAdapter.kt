@@ -21,6 +21,8 @@ class ChatsListAdapter(
     private var itemsList: MutableList<PrivateChat>
 ) : RecyclerView.Adapter<ChatsListAdapter.MyViewHolder>() {
 
+    private var isItemLoaderVisible = false
+
     inner class MyViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -84,6 +86,8 @@ class ChatsListAdapter(
     }
 
     fun setItems(newItemsList: List<PrivateChat>) {
+        this.hideItemLoader()
+
         val diffUtil = PrivateChatsDiffUtil(this.itemsList, newItemsList)
         val diffResult = DiffUtil.calculateDiff(diffUtil)
         this.itemsList = newItemsList.toMutableList()
@@ -91,6 +95,8 @@ class ChatsListAdapter(
     }
 
     fun insertItemAt(position: Int, pc: PrivateChat) {
+        this.hideItemLoader()
+
         this.itemsList.add(position, pc)
         this.notifyItemInserted(position)
     }
@@ -100,13 +106,37 @@ class ChatsListAdapter(
     }
 
     fun updateItemAt(position: Int, pc: PrivateChat) {
+        this.hideItemLoader()
+
         this.itemsList[position] = pc
         this.notifyItemChanged(position)
     }
 
     fun removeItemAt(position: Int) {
+        this.hideItemLoader()
+
         this.itemsList.removeAt(position)
         this.notifyItemRemoved(position)
+    }
+
+    fun showItemLoader() {
+        if (!this.isItemLoaderVisible) {
+            this.isItemLoaderVisible = true
+            this.itemsList.add(PrivateChat())
+            this.notifyItemInserted(this.itemsList.lastIndex)
+        }
+    }
+
+    fun hideItemLoader() {
+        val lastIndex = this.itemsList.lastIndex
+        if (lastIndex >= 0) {
+            val lastItem = this.itemsList[lastIndex]
+            if (lastItem.id == null) {
+                this.isItemLoaderVisible = false
+                this.itemsList.removeAt(lastIndex)
+                this.notifyItemRemoved(lastIndex)
+            }
+        }
     }
 
 }

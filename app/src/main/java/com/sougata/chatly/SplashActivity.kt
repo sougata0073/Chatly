@@ -1,5 +1,6 @@
 package com.sougata.chatly
 
+import android.app.ActivityOptions
 import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
@@ -9,6 +10,7 @@ import androidx.lifecycle.lifecycleScope
 import com.sougata.chatly.auth.AuthenticationActivity
 import com.sougata.chatly.data.MySupabaseClient
 import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashActivity : AppCompatActivity() {
@@ -19,19 +21,33 @@ class SplashActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-
         installSplashScreen()
+
+        this.setContentView(R.layout.activity_splash)
+
+        actionBar?.hide()
 
         this.lifecycleScope.launch {
             // This ensures authentication is properly initialized
             auth.awaitInitialization()
 
             val currentUser = auth.currentUserOrNull()
+            val activityOptionsBundle = ActivityOptions.makeCustomAnimation(
+                this@SplashActivity,
+                R.anim.fade_in_enter,
+                R.anim.fade_out_exit
+            ).toBundle()
 
             if (currentUser == null) {
-                startActivity(Intent(this@SplashActivity, AuthenticationActivity::class.java))
+                startActivity(
+                    Intent(this@SplashActivity, AuthenticationActivity::class.java),
+                    activityOptionsBundle
+                )
             } else {
-                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                startActivity(
+                    Intent(this@SplashActivity, MainActivity::class.java),
+                    activityOptionsBundle
+                )
             }
 
             finishAffinity()

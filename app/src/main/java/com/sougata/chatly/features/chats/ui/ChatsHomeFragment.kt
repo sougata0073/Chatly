@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.databinding.FragmentChatsHomeBinding
@@ -35,13 +36,7 @@ class ChatsHomeFragment : Fragment() {
 
         this.vm = ViewModelProvider(this)[ChatsHomeVM::class.java]
 
-        this.recyclerViewAdapter = ChatsListAdapter(mutableListOf())
-        this.binding.rvChatList.adapter = this.recyclerViewAdapter
-        this.binding.rvChatList.layoutManager = LinearLayoutManager(
-            requireContext(),
-            LinearLayoutManager.VERTICAL, false
-        )
-
+        this.setupRecyclerView()
         this.registerObservers()
     }
 
@@ -49,6 +44,38 @@ class ChatsHomeFragment : Fragment() {
         super.onDestroyView()
 
         this._binding = null
+    }
+
+    private fun setupRecyclerView() {
+        this.recyclerViewAdapter = ChatsListAdapter(mutableListOf())
+        this.binding.rvChatList.apply {
+            adapter = recyclerViewAdapter
+            layoutManager = LinearLayoutManager(
+                requireContext(),
+                LinearLayoutManager.VERTICAL, false
+            )
+        }
+
+        this.binding.rvChatList.addOnScrollListener(object: RecyclerView.OnScrollListener(){
+            val layoutManager = binding.rvChatList.layoutManager as LinearLayoutManager
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+
+                if (!vm.noMoreChats) {
+                    val itemCount = layoutManager.itemCount
+                    val lastItemPosition =
+                        layoutManager.findLastCompletelyVisibleItemPosition()
+
+                    if (lastItemPosition == itemCount - 5) {
+                        recyclerViewAdapter.showItemLoader()
+                    }
+
+                    if (lastItemPosition == itemCount - 1) {
+                        vm.loadPrivateChats()
+                    }
+                }
+            }
+        })
     }
 
     private fun registerObservers() {
