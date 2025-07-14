@@ -155,6 +155,15 @@ class PrivateMessagesAdapter(
         this.notifyItemRemoved(position)
     }
 
+    fun removeItemById(id: Long) {
+        this.hideItemLoader()
+
+        val index = this.itemsList.indexOfFirst { it.id == id }
+        if (index != -1) {
+            this.removeItemAt(index)
+        }
+    }
+
     fun getFirstItemId(): Long? {
         return if (this.itemsList.isEmpty()) {
             null
@@ -164,14 +173,18 @@ class PrivateMessagesAdapter(
     }
 
     fun showItemLoader() {
-        if (!this.isItemLoaderVisible) {
-            this.isItemLoaderVisible = true
-            this.itemsList.add(PrivateMessage())
-            this.notifyItemInserted(this.itemsList.lastIndex)
+        if (this.isItemLoaderVisible) {
+            return
         }
+        this.isItemLoaderVisible = true
+        this.itemsList.add(PrivateMessage())
+        this.notifyItemInserted(this.itemsList.lastIndex)
     }
 
     fun hideItemLoader() {
+        if (!this.isItemLoaderVisible) {
+            return
+        }
         val lastIndex = this.itemsList.lastIndex
         if (lastIndex >= 0) {
             val lastItem = this.itemsList[lastIndex]

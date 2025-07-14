@@ -1,7 +1,6 @@
 package com.sougata.chatly.features.chats.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
@@ -119,14 +118,18 @@ class ChatsListAdapter(
     }
 
     fun showItemLoader() {
-        if (!this.isItemLoaderVisible) {
-            this.isItemLoaderVisible = true
-            this.itemsList.add(PrivateChat())
-            this.notifyItemInserted(this.itemsList.lastIndex)
+        if (this.isItemLoaderVisible) {
+            return
         }
+        this.isItemLoaderVisible = true
+        this.itemsList.add(PrivateChat())
+        this.notifyItemInserted(this.itemsList.lastIndex)
     }
 
     fun hideItemLoader() {
+        if (!this.isItemLoaderVisible) {
+            return
+        }
         val lastIndex = this.itemsList.lastIndex
         if (lastIndex >= 0) {
             val lastItem = this.itemsList[lastIndex]

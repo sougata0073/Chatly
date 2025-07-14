@@ -184,11 +184,15 @@ class PrivateMessagesFragment : Fragment() {
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
                 val tempId = it.result!!.first
-                val privateMessage = it.result.second
+                val privateMessage = it.result.second!!
 
                 this.recyclerViewAdapter.updateItemById(tempId, privateMessage)
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
+
+                val tempId = it.result!!.first
+                this.recyclerViewAdapter.removeItemById(tempId)
+
                 DecoratedViews.showSnackBar(
                     requireView(),
                     null,

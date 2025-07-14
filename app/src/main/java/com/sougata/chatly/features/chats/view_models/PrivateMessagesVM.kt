@@ -16,7 +16,6 @@ import com.sougata.chatly.data.repositories.ChatsRepository
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.realtime.broadcastFlow
 import io.github.jan.supabase.realtime.channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
@@ -31,8 +30,8 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
     private val _messagesList = MutableLiveData<TaskResult<MutableList<PrivateMessage>>>()
     val messagesList: LiveData<TaskResult<MutableList<PrivateMessage>>> = this._messagesList
 
-    private val _messageSent = MutableLiveData<TaskResult<Pair<Long, PrivateMessage>>>()
-    val messageSent: LiveData<TaskResult<Pair<Long, PrivateMessage>>> = this._messageSent
+    private val _messageSent = MutableLiveData<TaskResult<Pair<Long, PrivateMessage?>>>()
+    val messageSent: LiveData<TaskResult<Pair<Long, PrivateMessage?>>> = this._messageSent
 
     private val _messageReceived = MutableLiveData<Pair<Int, PrivateMessage>>()
     val messageReceived: LiveData<Pair<Int, PrivateMessage>> = this._messageReceived
@@ -103,16 +102,26 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
                 )
             )
 
-            val fetchedPrivateMessages = result.result!!
             val updateIndex = prevList.indexOfFirst { it.id == tempPrivateMessage.id }
-            prevList[updateIndex] = fetchedPrivateMessages
+            if (result.taskStatus == TaskStatus.COMPLETED) {
+                val fetchedPrivateMessages = result.result!!
+                prevList[updateIndex] = fetchedPrivateMessages
 
-            _messageSent.value =
-                TaskResult(
-                    tempPrivateMessage.id!! to fetchedPrivateMessages,
-                    result.taskStatus,
-                    result.message
-                )
+                _messageSent.value =
+                    TaskResult(
+                        tempPrivateMessage.id!! to fetchedPrivateMessages,
+                        TaskStatus.COMPLETED,
+                        result.message
+                    )
+            } else if (result.taskStatus == TaskStatus.FAILED) {
+                prevList.removeAt(updateIndex)
+                _messageSent.value =
+                    TaskResult(
+                        tempPrivateMessage.id!! to null,
+                        TaskStatus.FAILED,
+                        result.message
+                    )
+            }
         }
     }
 
