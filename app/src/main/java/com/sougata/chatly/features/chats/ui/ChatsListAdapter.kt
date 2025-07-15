@@ -10,16 +10,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
+import com.sougata.chatly.util.RecyclerViewUtility
 import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.databinding.ItemChatBinding
 import com.sougata.chatly.features.chats.util.PrivateChatsDiffUtil
 import com.sougata.chatly.util.DateTime
 
 class ChatsListAdapter(
-    private var itemsList: MutableList<PrivateChat>
-) : RecyclerView.Adapter<ChatsListAdapter.MyViewHolder>() {
-
-    private var isItemLoaderVisible = false
+    override var itemsList: MutableList<PrivateChat>
+) : RecyclerViewUtility<Long, PrivateChat, ChatsListAdapter.MyViewHolder>(itemsList) {
 
     inner class MyViewHolder(private val binding: ItemChatBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -79,66 +78,14 @@ class ChatsListAdapter(
         holder.bind(this.itemsList[position])
     }
 
-    override fun getItemCount(): Int {
-        return this.itemsList.size
-    }
 
-    fun setItems(newItemsList: List<PrivateChat>) {
+    override fun setItems(newItemsList: List<PrivateChat>) {
         this.hideItemLoader()
 
         val diffUtil = PrivateChatsDiffUtil(this.itemsList, newItemsList)
         val diffResult = DiffUtil.calculateDiff(diffUtil)
         this.itemsList = newItemsList.toMutableList()
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun insertItemAt(position: Int, pc: PrivateChat) {
-        this.hideItemLoader()
-
-        this.itemsList.add(position, pc)
-        this.notifyItemInserted(position)
-    }
-
-    fun insertItemAtFirst(pc: PrivateChat) {
-        this.insertItemAt(0, pc)
-    }
-
-    fun updateItemAt(position: Int, pc: PrivateChat) {
-        this.hideItemLoader()
-
-        this.itemsList[position] = pc
-        this.notifyItemChanged(position)
-    }
-
-    fun removeItemAt(position: Int) {
-        this.hideItemLoader()
-
-        this.itemsList.removeAt(position)
-        this.notifyItemRemoved(position)
-    }
-
-    fun showItemLoader() {
-        if (this.isItemLoaderVisible) {
-            return
-        }
-        this.isItemLoaderVisible = true
-        this.itemsList.add(PrivateChat())
-        this.notifyItemInserted(this.itemsList.lastIndex)
-    }
-
-    fun hideItemLoader() {
-        if (!this.isItemLoaderVisible) {
-            return
-        }
-        val lastIndex = this.itemsList.lastIndex
-        if (lastIndex >= 0) {
-            val lastItem = this.itemsList[lastIndex]
-            if (lastItem.id == null) {
-                this.isItemLoaderVisible = false
-                this.itemsList.removeAt(lastIndex)
-                this.notifyItemRemoved(lastIndex)
-            }
-        }
     }
 
 }

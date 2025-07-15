@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.R
 import com.sougata.chatly.common.TaskStatus
+import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.databinding.FragmentChatsHomeBinding
 import com.sougata.chatly.features.chats.view_models.ChatsHomeVM
 import com.sougata.chatly.features.discover.DiscoverButtonClickHandler
@@ -59,7 +60,12 @@ class ChatsHomeFragment : Fragment() {
         }
         this.binding.incToolBar.apply {
 
-            btnAdd.setOnClickListener(DiscoverButtonClickHandler(btnAdd, requireContext()))
+            btnAdd.setOnClickListener(
+                DiscoverButtonClickHandler(
+                    btnAdd,
+                    requireContext()
+                )
+            )
 
             searchView.apply {
                 val searchViewEditText =
@@ -115,7 +121,7 @@ class ChatsHomeFragment : Fragment() {
                         layoutManager.findLastCompletelyVisibleItemPosition()
 
                     if (lastItemPosition == itemCount - 5) {
-                        recyclerViewAdapter.showItemLoader()
+                        recyclerViewAdapter.showItemLoader(PrivateChat())
                     }
 
                     if (lastItemPosition == itemCount - 1) {

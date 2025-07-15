@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -13,7 +12,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
-import com.sougata.chatly.MainActivity
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.common.TaskStatus
@@ -113,7 +111,7 @@ class PrivateMessagesFragment : Fragment() {
                         layoutManager.findLastCompletelyVisibleItemPosition()
 
                     if (lastItemPosition == itemCount - 5) {
-                        recyclerViewAdapter.showItemLoader()
+                        recyclerViewAdapter.showItemLoader(PrivateMessage())
                     }
 
                     if (lastItemPosition == itemCount - 1) {
@@ -129,7 +127,7 @@ class PrivateMessagesFragment : Fragment() {
             val text = this.binding.etMessageBox.text.toString()
             val receiverId = this.privateChat.otherUser?.id
 
-            val tempId = this.recyclerViewAdapter.getFirstItemId()?.plus(1L) ?: 0L
+            val tempId = this.recyclerViewAdapter.getItemIdAt(0)?.plus(1L) ?: 0L
             val tempPrivateMessage = PrivateMessage(
                 id = tempId,
                 text = text,

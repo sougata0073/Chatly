@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.sougata.chatly.util.RecyclerViewUtility
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.ItemListLoadingBinding
@@ -16,16 +17,14 @@ import com.sougata.chatly.util.DateTime
 import io.github.jan.supabase.auth.auth
 
 class PrivateMessagesAdapter(
-    private var itemsList: MutableList<PrivateMessage>
-) : RecyclerView.Adapter<PrivateMessagesAdapter.MyViewHolder>() {
+    override var itemsList: MutableList<PrivateMessage>
+) : RecyclerViewUtility<Long, PrivateMessage, PrivateMessagesAdapter.MyViewHolder>(itemsList) {
 
     private val currentUserId = MySupabaseClient.getInstance().auth.currentUserOrNull()!!.id
 
     private val viewTypeSender = 1
     private val viewTypeReceiver = 2
     private val viewTypeLoader = 3
-
-    private var isItemLoaderVisible = false
 
     inner class MyViewHolder(private val binding: ViewDataBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -105,11 +104,7 @@ class PrivateMessagesAdapter(
         holder.bind(this.itemsList[position])
     }
 
-    override fun getItemCount(): Int {
-        return this.itemsList.size
-    }
-
-    fun setItems(newItemsList: List<PrivateMessage>) {
+    override fun setItems(newItemsList: List<PrivateMessage>) {
         this.hideItemLoader()
 
         val diffUtil = PrivateMessagesDiffUtil(
@@ -119,81 +114,6 @@ class PrivateMessagesAdapter(
         val diffResult = DiffUtil.calculateDiff(diffUtil)
         this.itemsList = newItemsList.toMutableList()
         diffResult.dispatchUpdatesTo(this)
-    }
-
-    fun insertItemAt(position: Int, pmw: PrivateMessage) {
-        this.hideItemLoader()
-
-        this.itemsList.add(position, pmw)
-        this.notifyItemInserted(position)
-    }
-
-    fun insertItemAtFirst(pmw: PrivateMessage) {
-        this.insertItemAt(0, pmw)
-    }
-
-    fun updateItemAt(position: Int, pmw: PrivateMessage) {
-        this.hideItemLoader()
-
-        this.itemsList[position] = pmw
-        this.notifyItemChanged(position)
-    }
-
-    fun updateItemById(id: Long, pmw: PrivateMessage) {
-        this.hideItemLoader()
-
-        val index = this.itemsList.indexOfFirst { it.id == id }
-        if (index != -1) {
-            this.updateItemAt(index, pmw)
-        }
-    }
-
-    fun removeItemAt(position: Int) {
-        this.hideItemLoader()
-
-        this.itemsList.removeAt(position)
-        this.notifyItemRemoved(position)
-    }
-
-    fun removeItemById(id: Long) {
-        this.hideItemLoader()
-
-        val index = this.itemsList.indexOfFirst { it.id == id }
-        if (index != -1) {
-            this.removeItemAt(index)
-        }
-    }
-
-    fun getFirstItemId(): Long? {
-        return if (this.itemsList.isEmpty()) {
-            null
-        } else {
-            this.itemsList[0].id
-        }
-    }
-
-    fun showItemLoader() {
-        if (this.isItemLoaderVisible) {
-            return
-        }
-        this.isItemLoaderVisible = true
-        this.itemsList.add(PrivateMessage())
-        this.notifyItemInserted(this.itemsList.lastIndex)
-    }
-
-    fun hideItemLoader() {
-        if (!this.isItemLoaderVisible) {
-            return
-        }
-        val lastIndex = this.itemsList.lastIndex
-        if (lastIndex >= 0) {
-            val lastItem = this.itemsList[lastIndex]
-            if (lastItem.id == null) {
-                this.isItemLoaderVisible = false
-                this.itemsList.removeAt(lastIndex)
-                this.notifyItemRemoved(lastIndex)
-            }
-        }
     }
 
 }
