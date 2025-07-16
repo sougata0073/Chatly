@@ -4,14 +4,25 @@ import android.content.Context
 import android.view.View
 import androidx.appcompat.view.ContextThemeWrapper
 import androidx.appcompat.widget.PopupMenu
+import androidx.navigation.NavController
+import androidx.navigation.NavOptions
+import androidx.navigation.findNavController
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.R
 import com.sougata.chatly.util.DecoratedViews
 
 class DiscoverButtonClickHandler(
     private val view: View,
-    private val context: Context
+    private val context: Context,
 ) : View.OnClickListener {
+
+    private val navOptions = NavOptions.Builder()
+        .setEnterAnim(R.anim.popup_enter)
+        .setExitAnim(R.anim.popup_exit)
+        .setPopEnterAnim(R.anim.popup_enter_back)
+        .setPopExitAnim(R.anim.popup_exit_back)
+        .build()
+
     override fun onClick(p0: View?) {
 
         val popupMenu = PopupMenu(
@@ -21,12 +32,8 @@ class DiscoverButtonClickHandler(
         popupMenu.setOnMenuItemClickListener { menuItem ->
             when (menuItem.itemId) {
                 R.id.addFriend -> {
-                    DecoratedViews.showSnackBar(
-                        view,
-                        null,
-                        "Add friend",
-                        Snackbar.LENGTH_SHORT
-                    )
+                    this.view.findNavController().navigate(R.id.addFriendFragment, null, this.navOptions)
+
                     true
                 }
 

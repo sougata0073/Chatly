@@ -37,4 +37,9 @@
         android:name="com.sougata.chatly.features.chats.ui.PrivateMessagesFragment"
         android:label="fragment_private_messages"
         tools:layout="@layout/fragment_private_messages" />
+    <fragment
+        android:id="@+id/addFriendFragment"
+        android:name="com.sougata.chatly.features.discover.ui.AddFriendFragment"
+        android:label="fragment_add_friend"
+        tools:layout="@layout/fragment_add_friend"/>
 </navigation>
