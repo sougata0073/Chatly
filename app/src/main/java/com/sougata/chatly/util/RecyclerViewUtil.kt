@@ -58,7 +58,7 @@ abstract class RecyclerViewUtil<IdT, T : ListModel<IdT, T>, VH : RecyclerView.Vi
         this.notifyItemRemoved(position)
     }
 
-    fun removeItemById(id: Long) {
+    fun removeItemById(id: IdT) {
         this.hideItemLoader()
 
         val index = this.itemsList.indexOfFirst { it.id == id }
