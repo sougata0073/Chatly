@@ -1,7 +1,6 @@
 package com.sougata.chatly.features.discover.ui
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,16 +9,20 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.R
+import com.sougata.chatly.common.FriendRequestStatus
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.databinding.FragmentAddFriendBinding
+import com.sougata.chatly.databinding.ItemAddFriendBinding
 import com.sougata.chatly.features.discover.view_models.AddFriendVM
 import com.sougata.chatly.util.DecoratedViews
+import kotlinx.coroutines.launch
 
 class AddFriendFragment : Fragment() {
 
@@ -100,8 +103,32 @@ class AddFriendFragment : Fragment() {
         })
     }
 
+    private val sendFriendRequest: (receiver: SearchedUser, binding: ItemAddFriendBinding) -> Unit =
+        { receiver, binding ->
+            this.lifecycleScope.launch {
+                val result = vm.repo.sendFriendRequest(receiver.id!!)
+                if (result.taskStatus == TaskStatus.COMPLETED) {
+                    binding.ivFriendShipStatus.apply {
+                        this.background = null
+                        this.setImageResource(R.drawable.ic_check)
+                        setOnClickListener(null)
+                    }
+                    recyclerViewAdapter.updateItemById(
+                        receiver.id,
+                        receiver.apply { friendRequestStatus = FriendRequestStatus.PENDING }
+                    )
+                    DecoratedViews.showSnackBar(
+                        requireView(),
+                        null,
+                        "Friend request sent to ${receiver.user?.name}",
+                        Snackbar.LENGTH_LONG
+                    )
+                }
+            }
+        }
+
     private fun setupRecyclerView() {
-        this.recyclerViewAdapter = AddFriendAdapter(mutableListOf())
+        this.recyclerViewAdapter = AddFriendAdapter(mutableListOf(), this.sendFriendRequest)
         this.binding.recyclerView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)

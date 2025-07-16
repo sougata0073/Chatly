@@ -42,7 +42,7 @@ abstract class RecyclerViewUtil<IdT, T : ListModel<IdT, T>, VH : RecyclerView.Vi
         this.notifyItemChanged(position)
     }
 
-    fun updateItemById(id: Long, item: T) {
+    fun updateItemById(id: IdT, item: T) {
         this.hideItemLoader()
 
         val index = this.itemsList.indexOfFirst { it.id == id }

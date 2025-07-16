@@ -8,7 +8,8 @@ import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.data.models.SearchedUserDto
-import com.sougata.chatly.data.repositories.SearchRepository
+import com.sougata.chatly.data.models.User
+import com.sougata.chatly.data.repositories.DiscoverRepository
 import com.sougata.chatly.util.CoolDownTimer
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
@@ -21,7 +22,7 @@ class AddFriendVM : ViewModel() {
     private var searchJob: Job? = null
     private var prevSearchQuery = ""
 
-    private val repo = SearchRepository()
+    val repo = DiscoverRepository()
 
     private val _searchedUsersList = MutableLiveData<TaskResult<MutableList<SearchedUser>>>()
     val searchedUsersList: LiveData<TaskResult<MutableList<SearchedUser>>> = this._searchedUsersList

@@ -1,21 +1,21 @@
 package com.sougata.chatly.features.discover.ui
 
-import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import androidx.appcompat.content.res.AppCompatResources
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.FriendRequestStatus
 import com.sougata.chatly.data.models.SearchedUser
+import com.sougata.chatly.data.models.User
 import com.sougata.chatly.databinding.ItemAddFriendBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.RecyclerViewUtil
 
 class AddFriendAdapter(
-    override var itemsList: MutableList<SearchedUser>
+    override var itemsList: MutableList<SearchedUser>,
+    private val sendFriendRequest: (receiver: SearchedUser, binding: ItemAddFriendBinding) -> Unit
 ) : RecyclerViewUtil<String, SearchedUser, AddFriendAdapter.MyViewHolder>(itemsList) {
 
     private val viewTypeNormal = 1
@@ -40,29 +40,29 @@ class AddFriendAdapter(
                 tvContact.text = su.user?.email ?: su.user?.phoneNumber ?: "No contact available"
 
                 if (su.isFriends == true || su.friendRequestStatus == FriendRequestStatus.ACCEPTED) {
-                    ivFriendShipStatus.apply{
+                    ivFriendShipStatus.apply {
                         this.background = null
                         this.setImageResource(R.drawable.ic_friends)
+                        setOnClickListener(null)
                     }
                 } else if (su.friendRequestStatus == FriendRequestStatus.PENDING) {
-                    ivFriendShipStatus.apply{
+                    ivFriendShipStatus.apply {
                         this.background = null
                         this.setImageResource(R.drawable.ic_check)
+                        setOnClickListener(null)
                     }
                 } else {
-                    ivFriendShipStatus.apply{
+                    ivFriendShipStatus.apply {
                         this.isClickable = true
                         this.isFocusable = true
                         this.setImageResource(R.drawable.ic_add_friend)
                         setOnClickListener {
-                            // Send friend request
+                            sendFriendRequest(su, binding)
                         }
                     }
                 }
-
             }
         }
-
     }
 
     override fun getItemViewType(position: Int): Int {
@@ -96,5 +96,4 @@ class AddFriendAdapter(
     ) {
         holder.bind(this.itemsList[position])
     }
-
 }

@@ -1,5 +1,6 @@
 package com.sougata.chatly.data.repositories
 
+import android.util.Log
 import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
@@ -10,7 +11,7 @@ import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class SearchRepository {
+class DiscoverRepository {
 
     private val supabase = MySupabaseClient.getInstance()
     private val db = this.supabase.postgrest
@@ -23,6 +24,23 @@ class SearchRepository {
 
                 return@withContext TaskResult(list, TaskStatus.COMPLETED, "Task Completed")
             } catch (e: Exception) {
+                return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
+            }
+        }
+
+    suspend fun sendFriendRequest(receiverId: String): TaskResult<Unit> =
+        withContext(Dispatchers.IO) {
+            try {
+
+                val data = db.rpc(
+                    "send_friend_request",
+                    mapOf("_receiver_id" to receiverId)
+                ).data
+
+                return@withContext TaskResult(null, TaskStatus.COMPLETED, data)
+
+            } catch (e: Exception) {
+                Log.d("TAGFF", e.message.toString())
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }
         }

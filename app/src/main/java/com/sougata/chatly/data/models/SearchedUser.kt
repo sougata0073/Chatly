@@ -9,7 +9,7 @@ data class SearchedUser(
     @SerialName("searched_user_id") override val id: String? = null,
     @SerialName("searched_user") val user: User? = null,
     @SerialName("is_friends") val isFriends: Boolean? = null,
-    @SerialName("friend_request_status") val friendRequestStatus: String? = null
+    @SerialName("friend_request_status") var friendRequestStatus: String? = null
 ) : ListModel<String, SearchedUser> {
 
     override fun areContentsTheSame(other: SearchedUser): Boolean {
