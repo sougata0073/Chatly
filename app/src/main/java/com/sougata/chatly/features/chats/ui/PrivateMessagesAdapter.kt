@@ -6,19 +6,18 @@ import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.sougata.chatly.util.RecyclerViewUtility
+import com.sougata.chatly.util.RecyclerViewUtil
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageReceiverBinding
 import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageSenderBinding
-import com.sougata.chatly.features.chats.util.PrivateMessagesDiffUtil
 import com.sougata.chatly.util.DateTime
 import io.github.jan.supabase.auth.auth
 
 class PrivateMessagesAdapter(
     override var itemsList: MutableList<PrivateMessage>
-) : RecyclerViewUtility<Long, PrivateMessage, PrivateMessagesAdapter.MyViewHolder>(itemsList) {
+) : RecyclerViewUtil<Long, PrivateMessage, PrivateMessagesAdapter.MyViewHolder>(itemsList) {
 
     private val currentUserId = MySupabaseClient.getInstance().auth.currentUserOrNull()!!.id
 
@@ -102,18 +101,6 @@ class PrivateMessagesAdapter(
         position: Int
     ) {
         holder.bind(this.itemsList[position])
-    }
-
-    override fun setItems(newItemsList: List<PrivateMessage>) {
-        this.hideItemLoader()
-
-        val diffUtil = PrivateMessagesDiffUtil(
-            this.itemsList,
-            newItemsList
-        )
-        val diffResult = DiffUtil.calculateDiff(diffUtil)
-        this.itemsList = newItemsList.toMutableList()
-        diffResult.dispatchUpdatesTo(this)
     }
 
 }

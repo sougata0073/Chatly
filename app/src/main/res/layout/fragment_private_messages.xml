@@ -21,6 +21,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/private_messages_menu"
             app:navigationIcon="@drawable/ic_back_arrow"
+            app:titleTextColor="@color/bw"
             app:title="Message"
             app:titleCentered="true"
             app:titleTextAppearance="@style/messagesTitleTextStyle" />

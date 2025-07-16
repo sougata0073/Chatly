@@ -11,7 +11,7 @@
         android:minHeight="?attr/actionBarSize"
         android:paddingTop="5dp"
         android:paddingBottom="5dp"
-        tools:background="@drawable/main_activity_bg">
+        tools:background="@drawable/blue_gradient_bg">
 
         <TextView
             android:id="@+id/tvToolbarHeader"
@@ -44,7 +44,7 @@
             app:closeIcon="@drawable/ic_cross_small"
             app:iconifiedByDefault="true"
             app:queryBackground="@drawable/rounded_rectangle_bg"
-            app:searchIcon="@drawable/ic_search" />
+            app:searchIcon="@drawable/ic_search_white" />
 
     </com.google.android.material.appbar.MaterialToolbar>
 

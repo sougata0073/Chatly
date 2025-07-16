@@ -1,25 +1,30 @@
 package com.sougata.chatly
 
 import android.os.Bundle
-import android.widget.Button
-import android.widget.EditText
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.sougata.chatly.databinding.ActivityMainBinding
+import androidx.core.view.isVisible
 
 class MainActivity : AppCompatActivity() {
 
     private var _binding: ActivityMainBinding? = null
     val binding get() = this._binding!!
 
+    private lateinit var vm: MainActivityVM
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
 
         this._binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
+
+        this.vm = ViewModelProvider(this)[MainActivityVM::class.java]
 
         this.setupBottomNav()
     }
@@ -44,37 +49,25 @@ class MainActivity : AppCompatActivity() {
                 id == R.id.profileHomeFragment ||
                 id == R.id.moreHomeFragment
             ) {
+
                 this.binding.bottomNav.animate()
                     .translationY(0f)
                     .setDuration(300)
+                    .withStartAction {
+                        this.binding.bottomNav.visibility = View.VISIBLE
+                    }
                     .start()
             } else {
+
                 this.binding.bottomNav.animate()
                     .translationY(this.binding.bottomNav.height.toFloat())
                     .setDuration(300)
+                    .withEndAction {
+                        this.binding.bottomNav.visibility = View.GONE
+                    }
                     .start()
             }
         }
-    }
-
-    private fun setupSearchView() {
-//        this.binding.searchView.setOnSearchClickListener {
-//            this.binding.tvToolbarHeader.visibility = View.GONE
-//        }
-//        this.binding.searchView.setOnCloseListener {
-//            this.binding.tvToolbarHeader.visibility = View.VISIBLE
-//            false
-//        }
-//
-//        this.searchViewEditText =
-//            this.binding.searchView.findViewById(androidx.appcompat.R.id.search_src_text)
-//
-//        this.searchViewEditText.apply {
-//            setTextColor(AppCompatResources.getColorStateList(this@MainActivity, R.color.black))
-//
-//            hint = "Search"
-//            setHintTextColor(AppCompatResources.getColorStateList(this@MainActivity, R.color.grey))
-//        }
     }
 
 }

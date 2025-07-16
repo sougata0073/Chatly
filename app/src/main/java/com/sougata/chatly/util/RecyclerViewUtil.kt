@@ -1,15 +1,24 @@
 package com.sougata.chatly.util
 
+import android.util.Log
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.sougata.chatly.common.ListModel
 
-abstract class RecyclerViewUtility<IdT, T : ListModel<IdT>, VH : RecyclerView.ViewHolder>(
+abstract class RecyclerViewUtil<IdT, T : ListModel<IdT, T>, VH : RecyclerView.ViewHolder>(
     open var itemsList: MutableList<T>
 ) : RecyclerView.Adapter<VH>() {
 
     private var isItemLoaderVisible = false
 
-    abstract fun setItems(newItemsList: List<T>)
+    fun setItems(newItemsList: List<T>) {
+        this.hideItemLoader()
+
+        val diffUtil = MyDiffUtil(this.itemsList, newItemsList)
+        val diffResult = DiffUtil.calculateDiff(diffUtil)
+        this.itemsList = newItemsList.toMutableList()
+        diffResult.dispatchUpdatesTo(this)
+    }
 
     override fun getItemCount(): Int {
         return this.itemsList.size

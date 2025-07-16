@@ -21,7 +21,6 @@
 
     <style name="messagesTitleTextStyle" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">
         <item name="android:textStyle">bold</item>
-        <item name="android:textColor">@color/bw</item>
         <item name="android:textSize">22sp</item>
     </style>
 
