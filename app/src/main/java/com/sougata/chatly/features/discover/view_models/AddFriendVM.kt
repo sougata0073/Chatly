@@ -1,6 +1,5 @@
 package com.sougata.chatly.features.discover.view_models
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -10,6 +9,7 @@ import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.data.models.SearchedUserDto
 import com.sougata.chatly.data.repositories.SearchRepository
+import com.sougata.chatly.util.CoolDownTimer
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
@@ -28,11 +28,21 @@ class AddFriendVM : ViewModel() {
 
     var noMoreSearchedUsers = false
 
+    private val searchCoolDownTime: Long = 2000L
+    private val coolDownTimer = CoolDownTimer(this.searchCoolDownTime)
+
     init {
         this._searchedUsersList.value = TaskResult(mutableListOf(), TaskStatus.NONE, "Initialising")
     }
 
     fun loadSearchedUsers(searchQuery: String) {
+
+        if (this.coolDownTimer.isTimerFinished()) {
+            this.coolDownTimer.resetTimer()
+        } else {
+            return
+        }
+
         if (this.searchJob?.isActive == true) {
             this.searchJob?.cancel()
         }
@@ -56,6 +66,7 @@ class AddFriendVM : ViewModel() {
             } else if (result.taskStatus == TaskStatus.FAILED) {
                 _searchedUsersList.value = TaskResult(prevList, TaskStatus.FAILED, result.message)
             }
+            coolDownTimer.startTimer()
         }
     }
 
