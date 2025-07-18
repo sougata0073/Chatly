@@ -1,5 +1,6 @@
 package com.sougata.chatly.data.repositories
 
+import android.util.Log
 import com.sougata.chatly.common.Messages
 import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
@@ -12,6 +13,7 @@ import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 class AuthenticationRepository {
     private val supabase = MySupabaseClient.getInstance()
@@ -35,11 +37,8 @@ class AuthenticationRepository {
                     )
                 }
 
-                val user = db.rpc("get_own_details").decodeSingleOrNull<User>()
-
-                if (user == null) {
-                    return@withContext TaskResult(null, TaskStatus.FAILED, "User not found")
-                }
+                val result = db.rpc("get_own_details")
+                val user = Json.decodeFromString<User>(result.data)
 
                 if (user.isProfileUpdatedOnce == false) {
                     return@withContext TaskResult(user, TaskStatus.COMPLETED, Messages.NEW_USER)
@@ -48,6 +47,7 @@ class AuthenticationRepository {
                 }
 
             } catch (e: Exception) {
+                Log.d("LOGUU", e.message.toString())
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }
         }
