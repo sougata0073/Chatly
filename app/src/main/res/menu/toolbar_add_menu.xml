@@ -9,4 +9,14 @@
         android:id="@+id/createGroup"
         android:icon="@drawable/ic_groups"
         android:title="Create Group" />
+
+    <item
+        android:id="@+id/friends"
+        android:icon="@drawable/ic_friends_hollow"
+        android:title="Friends" />
+
+    <item
+        android:id="@+id/friendRequests"
+        android:icon="@drawable/ic_add_friend_neutral"
+        android:title="Friend requests" />
 </menu>

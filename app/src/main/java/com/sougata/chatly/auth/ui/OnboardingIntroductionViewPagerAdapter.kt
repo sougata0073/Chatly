@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.viewpager2.adapter.FragmentStateAdapter
 
-class ViewPagerAdapter(
+class OnboardingIntroductionViewPagerAdapter(
     private val itemsList: List<Triple<Int, String, String>>,
     private val fragmentActivity: FragmentActivity
 ) :

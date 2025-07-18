@@ -4,15 +4,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
-import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.sougata.chatly.util.RecyclerViewUtil
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageReceiverBinding
 import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageSenderBinding
 import com.sougata.chatly.util.DateTime
+import com.sougata.chatly.util.RecyclerViewUtil
 import io.github.jan.supabase.auth.auth
 
 class PrivateMessagesAdapter(

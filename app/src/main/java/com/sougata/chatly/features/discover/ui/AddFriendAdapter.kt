@@ -15,7 +15,7 @@ import com.sougata.chatly.util.RecyclerViewUtil
 
 class AddFriendAdapter(
     override var itemsList: MutableList<SearchedUser>,
-    private val sendFriendRequest: (receiver: SearchedUser, binding: ItemAddFriendBinding) -> Unit
+    private val sendFriendRequest: (receiver: SearchedUser) -> Unit
 ) : RecyclerViewUtil<String, SearchedUser, AddFriendAdapter.MyViewHolder>(itemsList) {
 
     private val viewTypeNormal = 1
@@ -57,7 +57,7 @@ class AddFriendAdapter(
                         this.isFocusable = true
                         this.setImageResource(R.drawable.ic_add_friend)
                         setOnClickListener {
-                            sendFriendRequest(su, binding)
+                            sendFriendRequest(su)
                         }
                     }
                 }

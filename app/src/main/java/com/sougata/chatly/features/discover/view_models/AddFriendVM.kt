@@ -1,13 +1,16 @@
 package com.sougata.chatly.features.discover.view_models
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.data.models.SearchedUserDto
+import com.sougata.chatly.data.models.ServerResponse
 import com.sougata.chatly.data.models.User
 import com.sougata.chatly.data.repositories.DiscoverRepository
 import com.sougata.chatly.util.CoolDownTimer
@@ -26,6 +29,9 @@ class AddFriendVM : ViewModel() {
 
     private val _searchedUsersList = MutableLiveData<TaskResult<MutableList<SearchedUser>>>()
     val searchedUsersList: LiveData<TaskResult<MutableList<SearchedUser>>> = this._searchedUsersList
+
+    private val _friendRequestSent = MutableLiveData<TaskResult<Pair<SearchedUser, ServerResponse?>>>()
+    val friendRequestSent: LiveData<TaskResult<Pair<SearchedUser, ServerResponse?>>> = this._friendRequestSent
 
     var noMoreSearchedUsers = false
 
@@ -95,6 +101,17 @@ class AddFriendVM : ViewModel() {
             } else if (result.taskStatus == TaskStatus.FAILED) {
                 _searchedUsersList.value = TaskResult(prevList, TaskStatus.FAILED, result.message)
             }
+        }
+    }
+
+    fun sendFriendRequest(searchedUser: SearchedUser) {
+        this._friendRequestSent.value = TaskResult(null, TaskStatus.STARTED, "Task Started")
+
+        this.viewModelScope.launch {
+            val result = repo.sendFriendRequest(searchedUser.id!!)
+            val pair = searchedUser to result.result
+
+            _friendRequestSent.value = TaskResult(pair, result.taskStatus, result.message)
         }
     }
 

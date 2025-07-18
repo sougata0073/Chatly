@@ -2,6 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="red">#FFFF0000</color>
+    <color name="green">#FF00FF00</color>
     <color name="bw">#FF000000</color>
     <color name="bw_inverted">#FFFFFFFF</color>
     <color name="bw_background">#FFFFFFFF</color>

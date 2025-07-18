@@ -64,7 +64,8 @@ class OnboardingIntroductionFragment : Fragment() {
             )
         )
 
-        this.binding.vpContent.adapter = ViewPagerAdapter(viewPagerItemsList, requireActivity())
+        this.binding.vpContent.adapter =
+            OnboardingIntroductionViewPagerAdapter(viewPagerItemsList, requireActivity())
         this.binding.dotsIndicator.attachTo(this.binding.vpContent)
     }
 

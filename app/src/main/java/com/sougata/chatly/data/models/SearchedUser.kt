@@ -20,5 +20,4 @@ data class SearchedUser(
             else -> true
         }
     }
-
 }

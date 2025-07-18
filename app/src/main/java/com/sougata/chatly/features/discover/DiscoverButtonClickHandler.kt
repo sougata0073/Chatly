@@ -47,6 +47,11 @@ class DiscoverButtonClickHandler(
                     true
                 }
 
+                R.id.friendRequests -> {
+                    this.view.findNavController().navigate(R.id.friendRequestsFragment, null, this.navOptions)
+                    true
+                }
+
                 else -> false
             }
         }

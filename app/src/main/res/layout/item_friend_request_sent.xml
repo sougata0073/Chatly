@@ -36,15 +36,15 @@
             android:textColor="@color/bw"
             android:textSize="16sp"
             android:textStyle="bold"
-            app:layout_constraintBottom_toTopOf="@id/tvContact"
-            app:layout_constraintEnd_toStartOf="@id/ivFriendShipStatus"
+            app:layout_constraintBottom_toTopOf="@id/tvSendingDate"
+            app:layout_constraintEnd_toStartOf="@id/btnDeleteFriendRequest"
             app:layout_constraintStart_toEndOf="@id/ivProfileImage"
             app:layout_constraintTop_toTopOf="@id/ivProfileImage"
             app:layout_constraintVertical_chainStyle="spread_inside"
             tools:text="Sougata Saha" />
 
         <TextView
-            android:id="@+id/tvContact"
+            android:id="@+id/tvSendingDate"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:ellipsize="end"
@@ -56,20 +56,22 @@
             app:layout_constraintEnd_toEndOf="@id/tvName"
             app:layout_constraintStart_toStartOf="@id/tvName"
             app:layout_constraintTop_toBottomOf="@id/tvName"
-            tools:text="6296320657" />
+            tools:text="Send on: 17-07-2025" />
 
-        <ImageView
-            android:id="@+id/ivFriendShipStatus"
+        <ImageButton
+            android:id="@+id/btnDeleteFriendRequest"
             android:layout_width="36dp"
             android:layout_height="36dp"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:contentDescription="Friendship status"
+            android:contentDescription="Friend request delete button"
             android:padding="6dp"
-            app:layout_constraintBottom_toBottomOf="@id/tvContact"
+            android:tooltipText="Delete"
+            android:src="@drawable/ic_cross_small"
+            app:layout_constraintBottom_toBottomOf="@id/tvSendingDate"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/tvName"
             app:layout_constraintTop_toTopOf="@id/tvName"
-            tools:src="@drawable/ic_add_friend" />
+            app:tint="@color/red" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -4,7 +4,7 @@ import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
-import com.sougata.chatly.data.models.PrivateChatDto
+import com.sougata.chatly.data.models.LimitOffsetDto
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.data.models.PrivateMessageGetDto
 import com.sougata.chatly.data.models.PrivateMessagePostDto
@@ -17,11 +17,11 @@ class ChatsRepository {
     private val supabase = MySupabaseClient.getInstance()
     private val db = this.supabase.postgrest
 
-    suspend fun getPrivateChats(privateChatDto: PrivateChatDto): TaskResult<List<PrivateChat>> =
+    suspend fun getPrivateChats(limitOffsetDto: LimitOffsetDto): TaskResult<List<PrivateChat>> =
         withContext(Dispatchers.IO) {
 
             try {
-                val list = db.rpc("get_private_chats", privateChatDto).decodeList<PrivateChat>()
+                val list = db.rpc("get_private_chats", limitOffsetDto).decodeList<PrivateChat>()
 
                 return@withContext TaskResult(list, TaskStatus.COMPLETED, "Task Completed")
             } catch (e: Exception) {

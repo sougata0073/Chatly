@@ -4,50 +4,39 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import androidx.appcompat.content.res.AppCompatResources
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
-import com.sougata.chatly.R
-import com.sougata.chatly.common.FriendRequestStatus
 import com.sougata.chatly.common.TaskStatus
-import com.sougata.chatly.data.models.SearchedUser
-import com.sougata.chatly.databinding.FragmentAddFriendBinding
-import com.sougata.chatly.databinding.ItemAddFriendBinding
-import com.sougata.chatly.features.discover.view_models.AddFriendVM
+import com.sougata.chatly.data.models.FriendRequestSent
+import com.sougata.chatly.databinding.FragmentFriendRequestsSentBinding
+import com.sougata.chatly.features.discover.view_models.FriendRequestsSentVM
 import com.sougata.chatly.util.DecoratedViews
-import kotlinx.coroutines.launch
 
-class AddFriendFragment : Fragment() {
+class FriendRequestsSentFragment : Fragment() {
 
-    private var _binding: FragmentAddFriendBinding? = null
+    private var _binding: FragmentFriendRequestsSentBinding? = null
     private val binding get() = this._binding!!
 
-    private lateinit var vm: AddFriendVM
+    private lateinit var vm: FriendRequestsSentVM
 
-    private lateinit var recyclerViewAdapter: AddFriendAdapter
+    private lateinit var recyclerViewAdapter: FriendRequestSentAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        this._binding = FragmentAddFriendBinding.inflate(inflater, container, false)
+        this._binding = FragmentFriendRequestsSentBinding.inflate(inflater, container, false)
         return this.binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        this.vm = ViewModelProvider(this)[AddFriendVM::class.java]
+        this.vm = ViewModelProvider(this)[FriendRequestsSentVM::class.java]
 
-        this.setupToolBar()
-        this.setupSearchView()
         this.setupRecyclerView()
         this.registerObservers()
     }
@@ -58,55 +47,13 @@ class AddFriendFragment : Fragment() {
         this._binding = null
     }
 
-    private fun setupToolBar() {
-        this.binding.toolBar.setNavigationOnClickListener {
-            this.findNavController().popBackStack()
-        }
-    }
-
-    private fun setupSearchView() {
-        this.binding.searchView.apply {
-            val editText =
-                this.findViewById<EditText>(androidx.appcompat.R.id.search_src_text)
-
-            editText.apply {
-                setTextColor(
-                    AppCompatResources.getColorStateList(
-                        requireContext(),
-                        R.color.bw
-                    )
-                )
-                hint = "Enter name or contact"
-                setHintTextColor(
-                    AppCompatResources.getColorStateList(
-                        requireContext(),
-                        R.color.grey
-                    )
-                )
-            }
-        }
-
-        this.binding.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
-            }
-
-            override fun onQueryTextChange(newText: String?): Boolean {
-                if (newText.isNullOrEmpty()) {
-                    vm.reset()
-                    recyclerViewAdapter.setItems(emptyList())
-                } else {
-                    vm.loadSearchedUsers(newText)
-                }
-                return true
-            }
-        })
-    }
 
     private fun setupRecyclerView() {
-        this.recyclerViewAdapter = AddFriendAdapter(mutableListOf()) {
-            this.vm.sendFriendRequest(it)
-        }
+        this.recyclerViewAdapter =
+            FriendRequestSentAdapter(mutableListOf()) {
+                this.vm.deleteFriendRequest(it)
+            }
+
         this.binding.recyclerView.apply {
             layoutManager =
                 LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
@@ -118,17 +65,17 @@ class AddFriendFragment : Fragment() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
 
-                if (!vm.noMoreSearchedUsers) {
+                if (!vm.noMoreFriendRequestsSent) {
                     val itemCount = layoutManager.itemCount
                     val lastItemPosition =
                         layoutManager.findLastCompletelyVisibleItemPosition()
 
                     if (lastItemPosition == itemCount - 5) {
-                        recyclerViewAdapter.showItemLoader(SearchedUser())
+                        recyclerViewAdapter.showItemLoader(FriendRequestSent())
                     }
 
                     if (lastItemPosition == itemCount - 1) {
-                        vm.loadMoreSearchedUsers()
+                        vm.loadFriendRequestsSent()
                     }
                 }
             }
@@ -136,16 +83,15 @@ class AddFriendFragment : Fragment() {
     }
 
     private fun registerObservers() {
-        this.vm.searchedUsersList.observe(this.viewLifecycleOwner) {
+        this.vm.friendRequestsSentList.observe(this.viewLifecycleOwner) {
             if (it.taskStatus == TaskStatus.STARTED) {
 
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
-                if (!it.result.isNullOrEmpty()) {
-                    this.recyclerViewAdapter.setItems(it.result)
-                }
+                this.recyclerViewAdapter.setItems(it.result!!)
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
+
                 DecoratedViews.showSnackBar(
                     requireView(),
                     null,
@@ -155,7 +101,7 @@ class AddFriendFragment : Fragment() {
             }
         }
 
-        this.vm.friendRequestSent.observe(this.viewLifecycleOwner) {
+        this.vm.deleteFriendRequest.observe(this.viewLifecycleOwner) {
             if (it.taskStatus == TaskStatus.STARTED) {
 
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
@@ -163,15 +109,12 @@ class AddFriendFragment : Fragment() {
                 val response = it.result!!.second
 
                 if (response?.isSuccessful == true) {
-                    val searchedUser = it.result.first
-                    this.recyclerViewAdapter.updateItemById(
-                        searchedUser.id!!,
-                        searchedUser.apply { friendRequestStatus = FriendRequestStatus.PENDING }
-                    )
+                    val friendRequestSent = it.result.first
+                    this.recyclerViewAdapter.removeItemById(friendRequestSent.id!!)
                     DecoratedViews.showSnackBar(
                         requireView(),
                         null,
-                        "Friend request sent to ${searchedUser.user?.name}",
+                        "Friend request deleted",
                         Snackbar.LENGTH_LONG
                     )
                 } else {

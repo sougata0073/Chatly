@@ -10,7 +10,7 @@ import com.sougata.chatly.common.TaskResult
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
-import com.sougata.chatly.data.models.PrivateChatDto
+import com.sougata.chatly.data.models.LimitOffsetDto
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.data.repositories.ChatsRepository
 import io.github.jan.supabase.auth.auth
@@ -64,7 +64,7 @@ class ChatsHomeVM : ViewModel() {
         this._chatsList.value = TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
-            val result = chatsRepo.getPrivateChats(PrivateChatDto(limit, offset))
+            val result = chatsRepo.getPrivateChats(LimitOffsetDto(limit, offset))
 
             val newList = result.result
 
