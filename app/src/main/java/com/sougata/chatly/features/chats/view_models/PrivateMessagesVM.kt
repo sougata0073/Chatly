@@ -47,7 +47,7 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
     private val supabase = MySupabaseClient.getInstance()
     val currentUserId = this.supabase.auth.currentUserOrNull()!!.id
 
-    var isFirstTimeLoadingMessages = true
+    var isFirstTimeListLoading = true
     var noMoreMessages = false
 
     init {
@@ -62,9 +62,9 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
         this._messagesList.value = TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
-            if(isFirstTimeLoadingMessages) {
+            if(isFirstTimeListLoading) {
                 delay(200)
-                isFirstTimeLoadingMessages = false
+                isFirstTimeListLoading = false
             }
             val result =
                 chatsRepo.getPrivateMessages(PrivateMessageGetDto(privateChat.id!!, limit, offset))

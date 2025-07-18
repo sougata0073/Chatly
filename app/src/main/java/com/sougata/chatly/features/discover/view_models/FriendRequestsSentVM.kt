@@ -10,6 +10,7 @@ import com.sougata.chatly.data.models.FriendRequestSent
 import com.sougata.chatly.data.models.LimitOffsetDto
 import com.sougata.chatly.data.models.ServerResponse
 import com.sougata.chatly.data.repositories.DiscoverRepository
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class FriendRequestsSentVM : ViewModel() {
@@ -27,6 +28,7 @@ class FriendRequestsSentVM : ViewModel() {
 
     val repo = DiscoverRepository()
 
+    var isFirstTimeListLoading = true
     var noMoreFriendRequestsSent = false
 
     init {
@@ -41,6 +43,10 @@ class FriendRequestsSentVM : ViewModel() {
             TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
+            if(isFirstTimeListLoading) {
+                delay(200)
+                isFirstTimeListLoading = false
+            }
             val result = repo.getFriendRequestsSent(LimitOffsetDto(limit, offset))
 
             val newList = result.result

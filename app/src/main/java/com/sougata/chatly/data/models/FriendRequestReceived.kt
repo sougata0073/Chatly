@@ -15,7 +15,6 @@ data class FriendRequestReceived(
 ): ListModel<Long, FriendRequestReceived> {
     override fun areContentsTheSame(other: FriendRequestReceived): Boolean {
         return when {
-            this.id != other.id -> false
             this.senderId != other.senderId -> false
             this.receiverId != other.receiverId -> false
             this.status != other.status -> false

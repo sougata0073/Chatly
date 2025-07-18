@@ -60,7 +60,7 @@ class ChatsHomeVM : ViewModel() {
     }
 
     fun loadPrivateChats() {
-        val prevList = this._chatsList.value?.result
+        val prevList = this._chatsList.value?.result!!
         this._chatsList.value = TaskResult(prevList, TaskStatus.STARTED, "Task Started")
 
         this.viewModelScope.launch {
@@ -72,7 +72,7 @@ class ChatsHomeVM : ViewModel() {
                 if (newList.isEmpty()) {
                     noMoreChats = true
                 }
-                prevList?.addAll(result.result)
+                prevList.addAll(result.result)
             }
             _chatsList.value = TaskResult(prevList, result.taskStatus, result.message)
             offset += limit

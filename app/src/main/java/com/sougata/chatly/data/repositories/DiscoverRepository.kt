@@ -9,6 +9,7 @@ import com.sougata.chatly.data.models.LimitOffsetDto
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.data.models.SearchedUserDto
 import com.sougata.chatly.data.models.ServerResponse
+import com.sougata.chatly.data.models.User
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
@@ -110,6 +111,17 @@ class DiscoverRepository {
                     TaskStatus.COMPLETED,
                     "Task Completed"
                 )
+            } catch (e: Exception) {
+                return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
+            }
+        }
+
+    suspend fun getFriends(limitOffsetDto: LimitOffsetDto): TaskResult<List<User>> =
+        withContext(Dispatchers.IO) {
+            try {
+                val list = db.rpc("get_friends", limitOffsetDto).decodeList<User>()
+
+                return@withContext TaskResult(list, TaskStatus.COMPLETED, "Task Completed")
             } catch (e: Exception) {
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }
