@@ -41,6 +41,8 @@ class ChatsHomeFragment : Fragment() {
 
         this.vm = ViewModelProvider(this)[ChatsHomeVM::class.java]
 
+
+
         this.setupToolBar()
         this.setupRecyclerView()
         this.registerObservers()

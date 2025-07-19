@@ -9,7 +9,6 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -19,10 +18,8 @@ import com.sougata.chatly.common.FriendRequestStatus
 import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.models.SearchedUser
 import com.sougata.chatly.databinding.FragmentAddFriendBinding
-import com.sougata.chatly.databinding.ItemAddFriendBinding
 import com.sougata.chatly.features.discover.view_models.AddFriendVM
 import com.sougata.chatly.util.DecoratedViews
-import kotlinx.coroutines.launch
 
 class AddFriendFragment : Fragment() {
 

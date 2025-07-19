@@ -12,6 +12,7 @@ import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.databinding.ItemChatBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
+import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.RecyclerViewUtil
 
@@ -36,27 +37,35 @@ class ChatsListAdapter(
                 .placeholder(R.drawable.ic_user_placeholder)
                 .into(this.binding.ivProfileImage)
 
-            this.binding.tvName.text = pc.otherUser?.name
-            this.binding.tvLastMessage.text =
-                pc.lastMessage?.id.toString() + " " + pc.lastMessage?.text
-
-            val lastMessageTime = pc.lastMessage?.createdAt
-            if (lastMessageTime == null) {
-                this.binding.tvLastMessageDate.text = ""
-                this.binding.tvLastMessageTime.text = ""
-            } else {
-                this.binding.tvLastMessageDate.text =
-                    DateTime.isoTimestampToDateString(lastMessageTime)
-                this.binding.tvLastMessageTime.text =
-                    DateTime.isoTimestampToTimeString(lastMessageTime)
-            }
-
-            this.binding.root.setOnClickListener {
-                val bundle = Bundle().apply {
-                    putParcelable(Keys.PRIVATE_CHAT, pc)
+            this.binding.apply {
+                tvName.text = pc.otherUser?.name
+                tvLastMessage.text =
+                    pc.lastMessage?.id.toString() + " " + pc.lastMessage?.text
+                val lastMessageTime = pc.lastMessage?.createdAt
+                if (lastMessageTime == null) {
+                    tvLastMessageDate.text = ""
+                    tvLastMessageTime.text = ""
+                } else {
+                    tvLastMessageDate.text =
+                        DateTime.isoTimestampToDateString(lastMessageTime)
+                    tvLastMessageTime.text =
+                        DateTime.isoTimestampToTimeString(lastMessageTime)
                 }
-                it.findNavController()
-                    .navigate(R.id.action_chatsHomeFragment_to_privateMessagesFragment, bundle)
+                root.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putParcelable(Keys.PRIVATE_CHAT, pc)
+                    }
+                    it.findNavController()
+                        .navigate(R.id.action_chatsHomeFragment_to_privateMessagesFragment, bundle)
+                }
+                ivProfileImage.setOnClickListener {
+                    val user = pc.otherUser
+                    val bundle = Bundle().apply {
+                        putString(Keys.USER_ID, user?.id)
+                    }
+                    it.findNavController()
+                        .navigate(R.id.userProfileFragment, bundle, Animations.FRAGMENT_SLIDE)
+                }
             }
         }
     }

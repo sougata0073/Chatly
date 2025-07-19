@@ -1,13 +1,17 @@
 package com.sougata.chatly.features.discover.ui
 
+import android.os.Bundle
 import android.view.ViewGroup
 import androidx.databinding.ViewDataBinding
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.sougata.chatly.R
+import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.FriendRequestSent
 import com.sougata.chatly.databinding.ItemFriendRequestSentBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
+import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.RecyclerViewUtil
 
@@ -44,6 +48,14 @@ class FriendRequestSentAdapter(
                 btnDeleteFriendRequest.setOnClickListener {
                     it.isClickable = false
                     deleteFriendRequest(frs)
+                }
+
+                root.setOnClickListener {
+                    val bundle = Bundle().apply {
+                        putString(Keys.USER_ID, frs.receivingUser?.id)
+                    }
+                    it.findNavController()
+                        .navigate(R.id.userProfileFragment, bundle, Animations.FRAGMENT_SLIDE)
                 }
             }
         }

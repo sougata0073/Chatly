@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -21,6 +22,7 @@ import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.FragmentPrivateMessagesBinding
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVM
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVMFactory
+import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.DecoratedViews
 import io.github.jan.supabase.auth.auth
@@ -76,6 +78,15 @@ class PrivateMessagesFragment : Fragment() {
             .error(R.drawable.ic_user_placeholder)
             .into(this.binding.ivOtherUserProfileImage)
 
+        val userInfoClickHandler: (View) -> Unit = {
+            val user = privateChat.otherUser
+            val bundle = Bundle().apply {
+                putString(Keys.USER_ID, user?.id)
+            }
+            it.findNavController()
+                .navigate(R.id.userProfileFragment, bundle, Animations.FRAGMENT_SLIDE)
+        }
+
         this.binding.apply {
             tvOtherUserName.text = privateChat.otherUser?.name
 
@@ -83,6 +94,10 @@ class PrivateMessagesFragment : Fragment() {
             val email = privateChat.otherUser?.email
 
             tvOtherUserContact.text = email ?: phoneNumber ?: "No contact available"
+
+            ivOtherUserProfileImage.setOnClickListener(userInfoClickHandler)
+            tvOtherUserName.setOnClickListener(userInfoClickHandler)
+            tvOtherUserContact.setOnClickListener(userInfoClickHandler)
         }
     }
 

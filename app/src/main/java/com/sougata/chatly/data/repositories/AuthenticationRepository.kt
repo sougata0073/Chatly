@@ -47,7 +47,6 @@ class AuthenticationRepository {
                 }
 
             } catch (e: Exception) {
-                Log.d("LOGUU", e.message.toString())
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }
         }

@@ -14,6 +14,7 @@ import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import kotlinx.serialization.json.Json
 
 class DiscoverRepository {
 
@@ -122,6 +123,18 @@ class DiscoverRepository {
                 val list = db.rpc("get_friends", limitOffsetDto).decodeList<User>()
 
                 return@withContext TaskResult(list, TaskStatus.COMPLETED, "Task Completed")
+            } catch (e: Exception) {
+                return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
+            }
+        }
+
+    suspend fun getUserDetails(userId: String): TaskResult<User> =
+        withContext(Dispatchers.IO) {
+            try {
+                val result = db.rpc("get_user_details", mapOf("_user_id" to userId))
+                val user = Json.decodeFromString<User>(result.data)
+
+                return@withContext TaskResult(user, TaskStatus.COMPLETED, "Task Completed")
             } catch (e: Exception) {
                 return@withContext TaskResult(null, TaskStatus.FAILED, e.message.toString())
             }

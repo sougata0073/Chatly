@@ -7,8 +7,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fitsSystemWindows="true"
         android:background="@color/message_screen_bg"
+        android:fitsSystemWindows="true"
         tools:context=".features.chats.ui.PrivateMessagesFragment">
 
         <com.google.android.material.appbar.MaterialToolbar
@@ -21,17 +21,17 @@
             app:layout_constraintTop_toTopOf="parent"
             app:menu="@menu/private_messages_menu"
             app:navigationIcon="@drawable/ic_back_arrow"
-            app:titleTextColor="@color/bw"
             app:title="Message"
             app:titleCentered="true"
-            app:titleTextAppearance="@style/messagesTitleTextStyle" />
+            app:titleTextAppearance="@style/messagesTitleTextStyle"
+            app:titleTextColor="@color/bw" />
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/otherUserInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="18dp"
-            android:paddingEnd="18dp"
+            android:paddingEnd="10dp"
             android:paddingBottom="15dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -41,6 +41,9 @@
                 android:id="@+id/ivOtherUserProfileImage"
                 android:layout_width="42dp"
                 android:layout_height="42dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:clickable="true"
+                android:focusable="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

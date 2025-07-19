@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/bw_background"
+        android:fitsSystemWindows="true"
+        tools:context=".features.discover.ui.UserProfileFragment">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <com.google.android.material.appbar.MaterialToolbar
+                android:id="@+id/toolBar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top"
+                android:minHeight="?attr/actionBarSize"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:navigationIcon="@drawable/ic_back_arrow"
+                app:titleTextAppearance="@style/messagesTitleTextStyle">
+
+                <ImageButton
+                    android:id="@+id/btnAudioCall"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="10dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_audio_call" />
+
+                <ImageButton
+                    android:id="@+id/btnVideoCall"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="12dp"
+                    android:background="?attr/selectableItemBackgroundBorderless"
+                    android:src="@drawable/ic_video_call" />
+
+            </com.google.android.material.appbar.MaterialToolbar>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="15dp"
+                android:layout_marginEnd="15dp">
+
+                <com.google.android.material.imageview.ShapeableImageView
+                    android:id="@+id/ivProfileImage"
+                    android:layout_width="160dp"
+                    android:layout_height="160dp"
+                    android:layout_marginTop="36dp"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_user_placeholder"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:shapeAppearance="@style/circleImageView" />
+
+                <TextView
+                    android:id="@+id/tvName"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_marginEnd="30dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/bw"
+                    android:textSize="22sp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ivProfileImage"
+                    tools:text="Sougata Saha" />
+
+                <TextView
+                    android:id="@+id/tvContact"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:ellipsize="end"
+                    android:gravity="center"
+                    android:maxLines="1"
+                    android:textColor="@color/bw"
+                    android:textIsSelectable="true"
+                    android:textSize="18sp"
+                    app:layout_constraintEnd_toEndOf="@id/tvName"
+                    app:layout_constraintStart_toStartOf="@id/tvName"
+                    app:layout_constraintTop_toBottomOf="@id/tvName"
+                    tools:text="+91 6296320657" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="32dp"
+                    app:dividerColor="@color/grey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/tvContact" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/media"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_marginTop="15dp"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Media, Links and Documents"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_forward_arrow"
+                    app:drawableStartCompat="@drawable/ic_media" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/muteNotificationSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:checked="true"
+                    android:drawableStart="@drawable/ic_speaker"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Mute Notification"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/switch_track" />
+
+                <TextView
+                    android:id="@+id/customNotification"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Custom Notification"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_forward_arrow"
+                    app:drawableStartCompat="@drawable/ic_notification_bell" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/protectedChatSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:drawableStart="@drawable/ic_shield"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Protected Chat"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/switch_track" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/hideChatSwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:drawableStart="@drawable/ic_eye"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Hide Chat"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/switch_track" />
+
+                <com.google.android.material.materialswitch.MaterialSwitch
+                    android:id="@+id/hideChatHistorySwitch"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:drawableStart="@drawable/ic_eye"
+                    android:drawablePadding="16dp"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Hide Chat History"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:thumbTint="@color/white"
+                    app:trackTint="@color/switch_track" />
+
+                <TextView
+                    android:id="@+id/addToGroup"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Add To Group"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_forward_arrow"
+                    app:drawableStartCompat="@drawable/ic_group"
+                    app:drawableTint="@color/bw" />
+
+                <TextView
+                    android:id="@+id/customColorChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Custom Color Chat"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_forward_arrow"
+                    app:drawableStartCompat="@drawable/ic_color_palette" />
+
+                <TextView
+                    android:id="@+id/customBackgroundChat"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Custom Background Chat"
+                    android:textColor="@color/bw"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableEndCompat="@drawable/ic_forward_arrow"
+                    app:drawableStartCompat="@drawable/ic_edit_media" />
+
+                <TextView
+                    android:id="@+id/report"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Report"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_report" />
+
+                <TextView
+                    android:id="@+id/block"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/minTouchTargetSize"
+                    android:layout_marginBottom="20dp"
+                    android:background="?selectableItemBackground"
+                    android:clickable="true"
+                    android:drawablePadding="16dp"
+                    android:focusable="true"
+                    android:gravity="center_vertical"
+                    android:paddingStart="25dp"
+                    android:paddingEnd="25dp"
+                    android:text="Block"
+                    android:textColor="@color/red"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    app:drawableStartCompat="@drawable/ic_block" />
+
+            </LinearLayout>
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>
