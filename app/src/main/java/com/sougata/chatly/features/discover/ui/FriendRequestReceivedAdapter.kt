@@ -13,7 +13,11 @@ import com.sougata.chatly.databinding.ItemFriendRequestReceivedBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
+import com.sougata.chatly.util.Files
 import com.sougata.chatly.util.RecyclerViewUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FriendRequestReceivedAdapter(
     override var itemsList: MutableList<FriendRequestReceived>,
@@ -34,11 +38,23 @@ class FriendRequestReceivedAdapter(
                 return
             }
 
-            Glide.with(binding.root)
-                .load(frr.sendingUser?.profileImageUrl)
-                .placeholder(R.drawable.ic_user_placeholder)
-                .error(R.drawable.ic_user_placeholder)
-                .into(binding.ivProfileImage)
+            CoroutineScope(Dispatchers.Main).launch {
+                val mediaData = frr.sendingUser?.profileImageData
+                if (mediaData != null) {
+                    val profileImageFile =
+                        Files.getFile(mediaData, binding.root.context)
+
+                    Glide.with(binding.root)
+                        .load(profileImageFile)
+                        .error(R.drawable.ic_user_placeholder)
+                        .placeholder(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                } else {
+                    Glide.with(binding.root)
+                        .load(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                }
+            }
 
             this.binding.apply {
                 tvName.text = frr?.id.toString() + " " + frr.sendingUser?.name

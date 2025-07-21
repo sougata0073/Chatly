@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.findNavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -25,7 +26,11 @@ import com.sougata.chatly.features.chats.view_models.PrivateMessagesVMFactory
 import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.DecoratedViews
+import com.sougata.chatly.util.Files
 import io.github.jan.supabase.auth.auth
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class PrivateMessagesFragment : Fragment() {
 
@@ -72,11 +77,23 @@ class PrivateMessagesFragment : Fragment() {
     }
 
     private fun setupUI() {
-        Glide.with(this.requireContext())
-            .load(this.privateChat.otherUser?.profileImageUrl)
-            .placeholder(R.drawable.ic_user_placeholder)
-            .error(R.drawable.ic_user_placeholder)
-            .into(this.binding.ivOtherUserProfileImage)
+        this.lifecycleScope.launch {
+            val mediaData = privateChat.otherUser?.profileImageData
+            if (mediaData != null) {
+                val profileImageFile =
+                    Files.getFile(mediaData, binding.root.context)
+
+                Glide.with(binding.root)
+                    .load(profileImageFile)
+                    .error(R.drawable.ic_user_placeholder)
+                    .placeholder(R.drawable.ic_user_placeholder)
+                    .into(binding.ivOtherUserProfileImage)
+            } else {
+                Glide.with(binding.root)
+                    .load(R.drawable.ic_user_placeholder)
+                    .into(binding.ivOtherUserProfileImage)
+            }
+        }
 
         val userInfoClickHandler: (View) -> Unit = {
             val user = privateChat.otherUser

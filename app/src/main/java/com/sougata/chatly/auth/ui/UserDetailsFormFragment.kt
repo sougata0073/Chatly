@@ -3,10 +3,11 @@ package com.sougata.chatly.auth.ui
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts.PickVisualMedia
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
@@ -33,6 +34,21 @@ class UserDetailsFormFragment : Fragment() {
 
     private lateinit var previousUser: User
 
+    private val pickMedia =
+        registerForActivityResult(PickVisualMedia()) { uri ->
+            if (uri != null) {
+
+                vm.profileImageUri = uri
+
+                Glide.with(this)
+                    .load(uri)
+                    .error(R.drawable.ic_user_placeholder)
+                    .placeholder(R.drawable.ic_user_placeholder)
+                    .into(this.binding.ivProfileImage)
+
+            }
+        }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,42 +72,38 @@ class UserDetailsFormFragment : Fragment() {
 
         this.vm = ViewModelProvider(
             this,
-            UserDetailsFormVMFactory(this.previousUser)
+            UserDetailsFormVMFactory(this.previousUser, requireActivity().application)
         )[UserDetailsFormVM::class.java]
+
+        this.binding.btnEditProfileImage.setOnClickListener {
+            this.pickMedia.launch(
+                PickVisualMediaRequest(PickVisualMedia.ImageOnly)
+            )
+        }
 
         this.binding.vm = this.vm
         this.binding.lifecycleOwner = this.viewLifecycleOwner
 
-        this.initializeUI()
         this.setupObservers()
         this.setupDobCalendarButton()
         this.setupSaveButton()
     }
 
-    private fun initializeUI() {
-        Glide.with(requireContext())
-            .load(this.vm.profileImageUrl.value)
-            .error(R.drawable.ic_user_placeholder)
-            .placeholder(R.drawable.ic_user_placeholder)
-            .into(this.binding.ivProfileImage)
-    }
-
     private fun setupObservers() {
         this.vm.updateUserDetails.observe(this.viewLifecycleOwner) {
-            Log.d("TAG", "Update user message: ${it.message}")
             if (it.taskStatus == TaskStatus.STARTED) {
 
-                this.binding.viewBlocker.progressBar.visibility = View.VISIBLE
+                this.binding.viewBlocker.parentLayout.visibility = View.VISIBLE
 
             } else if (it.taskStatus == TaskStatus.COMPLETED) {
 
-                this.binding.viewBlocker.progressBar.visibility = View.GONE
+                this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 startActivity(Intent(requireContext(), MainActivity::class.java))
                 requireActivity().finishAffinity()
 
             } else if (it.taskStatus == TaskStatus.FAILED) {
 
-                this.binding.viewBlocker.progressBar.visibility = View.GONE
+                this.binding.viewBlocker.parentLayout.visibility = View.GONE
                 DecoratedViews.showSnackBar(
                     requireView(),
                     requireView(),
@@ -108,9 +120,8 @@ class UserDetailsFormFragment : Fragment() {
             val emailString = this.vm.email.value
             val phoneNumberString = this.vm.phoneNumber.value
             val genderString = this.vm.gender.value
-            val dob = this.vm.dob
+            val dob = this.vm.dobMillis
             val bioString = this.vm.bio.value
-            val profileImageUrl = this.vm.profileImageUrl.value
 
             if (nameString.isNullOrEmpty()) {
                 this.binding.nameLayout.error = "Name can't be empty"
@@ -135,7 +146,7 @@ class UserDetailsFormFragment : Fragment() {
                 dob = if (dob == null) null else DateTime.millisToISOTimestampString(dob),
                 bio = bioString,
                 location = null,
-                profileImageUrl = profileImageUrl
+                profileImageData = null
             )
 
             this.vm.updateUserDetails(updatedUser)
@@ -149,7 +160,7 @@ class UserDetailsFormFragment : Fragment() {
                 .setSelection(MaterialDatePicker.todayInUtcMilliseconds())
                 .build()
             datePicker.addOnPositiveButtonClickListener { timeInMillis ->
-                this.vm.dob = timeInMillis
+                this.vm.dobMillis = timeInMillis
                 this.vm.dobString.value = DateTime.millisToDateString(timeInMillis)
             }
 

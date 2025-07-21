@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
@@ -16,6 +17,8 @@ import com.sougata.chatly.databinding.FragmentUserProfileBinding
 import com.sougata.chatly.features.discover.view_models.UserProfileVM
 import com.sougata.chatly.features.discover.view_models.UserProfileVMFactory
 import com.sougata.chatly.util.DecoratedViews
+import com.sougata.chatly.util.Files
+import kotlinx.coroutines.launch
 
 class UserProfileFragment : Fragment() {
 
@@ -59,11 +62,23 @@ class UserProfileFragment : Fragment() {
 
                 val user = it.result!!
 
-                Glide.with(this)
-                    .load(user.profileImageUrl)
-                    .placeholder(R.drawable.ic_user_placeholder)
-                    .error(R.drawable.ic_user_placeholder)
-                    .into(binding.ivProfileImage)
+                this.lifecycleScope.launch {
+                    val mediaData = user.profileImageData
+                    if (mediaData != null) {
+                        val profileImageFile =
+                            Files.getFile(mediaData, binding.root.context)
+
+                        Glide.with(binding.root)
+                            .load(profileImageFile)
+                            .error(R.drawable.ic_user_placeholder)
+                            .placeholder(R.drawable.ic_user_placeholder)
+                            .into(binding.ivProfileImage)
+                    } else {
+                        Glide.with(binding.root)
+                            .load(R.drawable.ic_user_placeholder)
+                            .into(binding.ivProfileImage)
+                    }
+                }
 
                 this.binding.apply {
                     tvName.text = user.name

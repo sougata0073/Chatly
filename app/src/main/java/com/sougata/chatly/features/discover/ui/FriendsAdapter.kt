@@ -13,7 +13,11 @@ import com.sougata.chatly.data.models.User
 import com.sougata.chatly.databinding.ItemFriendBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
+import com.sougata.chatly.util.Files
 import com.sougata.chatly.util.RecyclerViewUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FriendsAdapter(
     override var itemsList: MutableList<User>
@@ -30,11 +34,23 @@ class FriendsAdapter(
                 return
             }
 
-            Glide.with(this.binding.root)
-                .load(u.profileImageUrl)
-                .placeholder(R.drawable.ic_user_placeholder)
-                .error(R.drawable.ic_user_placeholder)
-                .into(this.binding.ivProfileImage)
+            CoroutineScope(Dispatchers.Main).launch {
+                val mediaData = u.profileImageData
+                if (mediaData != null) {
+                    val profileImageFile =
+                        Files.getFile(mediaData, binding.root.context)
+
+                    Glide.with(binding.root)
+                        .load(profileImageFile)
+                        .error(R.drawable.ic_user_placeholder)
+                        .placeholder(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                } else {
+                    Glide.with(binding.root)
+                        .load(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                }
+            }
 
             this.binding.apply {
                 tvName.text = u.name

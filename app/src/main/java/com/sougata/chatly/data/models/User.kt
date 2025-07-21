@@ -17,7 +17,7 @@ data class User(
     @SerialName("dob") val dob: String? = null,
     @SerialName("bio") val bio: String? = null,
     @SerialName("location") val location: Location? = null,
-    @SerialName("profile_image_url") val profileImageUrl: String? = null,
+    @SerialName("profile_image_data") var profileImageData: MediaData? = null,
     @SerialName("is_profile_updated_once") val isProfileUpdatedOnce: Boolean? = null,
     @SerialName("created_at") val createdAt: String? = null
 ): Parcelable, ListModel<String, User>{
@@ -30,7 +30,7 @@ data class User(
             this.dob != other.dob -> false
             this.bio != other.bio -> false
             this.location != other.location -> false
-            this.profileImageUrl != other.profileImageUrl -> false
+            this.profileImageData != other.profileImageData -> false
             this.isProfileUpdatedOnce != other.isProfileUpdatedOnce -> false
             this.createdAt != other.createdAt -> false
             else -> true

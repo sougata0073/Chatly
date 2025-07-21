@@ -102,6 +102,6 @@ dependencies {
     // Glide
     implementation("com.github.bumptech.glide:glide:4.16.0")
 
-    // Java faker
-    implementation("com.github.javafaker:javafaker:1.0.2")
+    // Image compressor
+    implementation("id.zelory:compressor:3.0.1")
 }

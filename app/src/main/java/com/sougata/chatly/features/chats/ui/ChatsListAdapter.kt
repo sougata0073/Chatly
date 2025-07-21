@@ -14,7 +14,11 @@ import com.sougata.chatly.databinding.ItemChatBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
+import com.sougata.chatly.util.Files
 import com.sougata.chatly.util.RecyclerViewUtil
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class ChatsListAdapter(
     override var itemsList: MutableList<PrivateChat>
@@ -31,11 +35,23 @@ class ChatsListAdapter(
                 return
             }
 
-            Glide.with(this.binding.root)
-                .load(pc.otherUser?.profileImageUrl)
-                .error(R.drawable.ic_user_placeholder)
-                .placeholder(R.drawable.ic_user_placeholder)
-                .into(this.binding.ivProfileImage)
+            CoroutineScope(Dispatchers.Main).launch {
+                val mediaData = pc.otherUser?.profileImageData
+                if (mediaData != null) {
+                    val profileImageFile =
+                        Files.getFile(mediaData, binding.root.context)
+
+                    Glide.with(binding.root)
+                        .load(profileImageFile)
+                        .error(R.drawable.ic_user_placeholder)
+                        .placeholder(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                } else {
+                    Glide.with(binding.root)
+                        .load(R.drawable.ic_user_placeholder)
+                        .into(binding.ivProfileImage)
+                }
+            }
 
             this.binding.apply {
                 tvName.text = pc.otherUser?.name
