@@ -38,32 +38,4 @@ object Files {
 
             return@withContext compressedImageByteArray
         }
-
-    suspend fun getFile(mediaData: MediaData, context: Context): File =
-        withContext(Dispatchers.IO) {
-            try {
-                val bucketId =
-                    mediaData.bucketId ?: throw IllegalArgumentException("Bucket ID is null")
-                val parentFileDir = context.getExternalFilesDir(bucketId)
-                val path = mediaData.path ?: throw IllegalArgumentException("Path is null")
-                val finalPath = parentFileDir?.path + "/" + path
-                val file = File(finalPath)
-
-                if (file.exists()) {
-                    Log.d("TAGFF", "From cache ${file.path}")
-                    return@withContext file
-                } else {
-                    val bucket = MySupabaseClient.getInstance().storage.from(
-                        bucketId
-                    )
-                    bucket.downloadAuthenticatedTo(path, file)
-                    Log.d("TAGFF", "From server")
-                    return@withContext file
-                }
-
-            } catch (e: Exception) {
-                Log.d("TAGFF", "Error: ${e.message}")
-                throw e
-            }
-        }
 }

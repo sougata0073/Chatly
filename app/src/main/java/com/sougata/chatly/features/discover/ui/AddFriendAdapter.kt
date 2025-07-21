@@ -11,6 +11,7 @@ import com.sougata.chatly.R
 import com.sougata.chatly.common.FriendRequestStatus
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.SearchedUser
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.ItemAddFriendBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
@@ -24,6 +25,8 @@ class AddFriendAdapter(
     override var itemsList: MutableList<SearchedUser>,
     private val sendFriendRequest: (receiver: SearchedUser) -> Unit
 ) : RecyclerViewUtil<String, SearchedUser, AddFriendAdapter.MyViewHolder>(itemsList) {
+
+    private val storageRepo = StorageRepository()
 
     private val viewTypeNormal = 1
     private val viewTypeLoader = 2
@@ -40,7 +43,7 @@ class AddFriendAdapter(
                 val mediaData = su.user?.profileImageData
                 if (mediaData != null) {
                     val profileImageFile =
-                        Files.getFile(mediaData, binding.root.context)
+                        storageRepo.downloadMedia(mediaData, binding.root.context)
 
                     Glide.with(binding.root)
                         .load(profileImageFile)

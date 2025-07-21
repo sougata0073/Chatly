@@ -13,6 +13,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.common.TaskStatus
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.FragmentUserProfileBinding
 import com.sougata.chatly.features.discover.view_models.UserProfileVM
 import com.sougata.chatly.features.discover.view_models.UserProfileVMFactory
@@ -28,6 +29,8 @@ class UserProfileFragment : Fragment() {
     private lateinit var vm: UserProfileVM
 
     private lateinit var userId: String
+
+    private val storageRepo = StorageRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -66,7 +69,7 @@ class UserProfileFragment : Fragment() {
                     val mediaData = user.profileImageData
                     if (mediaData != null) {
                         val profileImageFile =
-                            Files.getFile(mediaData, binding.root.context)
+                            storageRepo.downloadMedia(mediaData, binding.root.context)
 
                         Glide.with(binding.root)
                             .load(profileImageFile)

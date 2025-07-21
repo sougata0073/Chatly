@@ -20,6 +20,7 @@ import com.sougata.chatly.common.TaskStatus
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.data.models.PrivateMessage
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.FragmentPrivateMessagesBinding
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVM
 import com.sougata.chatly.features.chats.view_models.PrivateMessagesVMFactory
@@ -44,6 +45,8 @@ class PrivateMessagesFragment : Fragment() {
     private lateinit var recyclerViewAdapter: PrivateMessagesAdapter
 
     private val currentUserId = MySupabaseClient.getInstance().auth.currentUserOrNull()!!.id
+
+    private val storageRepo = StorageRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?
@@ -81,7 +84,7 @@ class PrivateMessagesFragment : Fragment() {
             val mediaData = privateChat.otherUser?.profileImageData
             if (mediaData != null) {
                 val profileImageFile =
-                    Files.getFile(mediaData, binding.root.context)
+                    storageRepo.downloadMedia(mediaData, binding.root.context)
 
                 Glide.with(binding.root)
                     .load(profileImageFile)

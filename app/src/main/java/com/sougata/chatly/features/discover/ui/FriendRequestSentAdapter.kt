@@ -9,11 +9,11 @@ import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.FriendRequestSent
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.ItemFriendRequestSentBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
-import com.sougata.chatly.util.Files
 import com.sougata.chatly.util.RecyclerViewUtil
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -24,6 +24,8 @@ class FriendRequestSentAdapter(
     private val deleteFriendRequest: (FriendRequestSent) -> Unit
 ) :
     RecyclerViewUtil<Long, FriendRequestSent, FriendRequestSentAdapter.MyViewHolder>(itemsList) {
+
+    private val storageRepo = StorageRepository()
 
     private val viewTypeNormal = 1
     private val viewTypeLoader = 2
@@ -41,7 +43,7 @@ class FriendRequestSentAdapter(
                 val mediaData = frs.receivingUser?.profileImageData
                 if (mediaData != null) {
                     val profileImageFile =
-                        Files.getFile(mediaData, binding.root.context)
+                        storageRepo.downloadMedia(mediaData, binding.root.context)
 
                     Glide.with(binding.root)
                         .load(profileImageFile)

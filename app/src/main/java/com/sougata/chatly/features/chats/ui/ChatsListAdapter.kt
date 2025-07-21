@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.PrivateChat
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.ItemChatBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
@@ -23,6 +24,8 @@ import kotlinx.coroutines.launch
 class ChatsListAdapter(
     override var itemsList: MutableList<PrivateChat>
 ) : RecyclerViewUtil<Long, PrivateChat, ChatsListAdapter.MyViewHolder>(itemsList) {
+
+    private val storageRepo = StorageRepository()
 
     private val viewTypeNormal = 1
     private val viewTypeLoader = 2
@@ -39,7 +42,7 @@ class ChatsListAdapter(
                 val mediaData = pc.otherUser?.profileImageData
                 if (mediaData != null) {
                     val profileImageFile =
-                        Files.getFile(mediaData, binding.root.context)
+                        storageRepo.downloadMedia(mediaData, binding.root.context)
 
                     Glide.with(binding.root)
                         .load(profileImageFile)

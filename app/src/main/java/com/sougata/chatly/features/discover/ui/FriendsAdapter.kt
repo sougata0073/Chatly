@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide
 import com.sougata.chatly.R
 import com.sougata.chatly.common.Keys
 import com.sougata.chatly.data.models.User
+import com.sougata.chatly.data.repositories.StorageRepository
 import com.sougata.chatly.databinding.ItemFriendBinding
 import com.sougata.chatly.databinding.ItemListLoadingBinding
 import com.sougata.chatly.util.Animations
@@ -22,6 +23,8 @@ import kotlinx.coroutines.launch
 class FriendsAdapter(
     override var itemsList: MutableList<User>
 ) : RecyclerViewUtil<String, User, FriendsAdapter.MyViewHolder>(itemsList) {
+
+    private val storageRepo = StorageRepository()
 
     private val viewTypeNormal = 1
     private val viewTypeLoader = 2
@@ -38,7 +41,7 @@ class FriendsAdapter(
                 val mediaData = u.profileImageData
                 if (mediaData != null) {
                     val profileImageFile =
-                        Files.getFile(mediaData, binding.root.context)
+                        storageRepo.downloadMedia(mediaData, binding.root.context)
 
                     Glide.with(binding.root)
                         .load(profileImageFile)
