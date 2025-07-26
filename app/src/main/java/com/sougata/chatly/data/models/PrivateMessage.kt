@@ -14,8 +14,7 @@ data class PrivateMessage(
     @SerialName("sender_id") val senderId: String? = null,
     @SerialName("receiver_id") val receiverId: String? = null,
     @SerialName("text") var text: String? = null,
-    @SerialName("media_type") var mediaType: String? = null,
-    @SerialName("media_url") var mediaUrl: String? = null,
+    @SerialName("media_data") var mediaData: MediaData? = null,
     @SerialName("is_text_edited") var isTextEdited: Boolean? = null,
     @SerialName("created_at") val createdAt: String? = null
 ) : Parcelable, ListModel<Long, PrivateMessage> {
@@ -26,8 +25,7 @@ data class PrivateMessage(
             this.senderId != other.senderId -> false
             this.receiverId != other.receiverId -> false
             this.text != other.text -> false
-            this.mediaType != other.mediaType -> false
-            this.mediaUrl != other.mediaUrl -> false
+            this.mediaData != other.mediaData -> false
             this.isTextEdited != other.isTextEdited -> false
             this.createdAt != other.createdAt -> false
             else -> true

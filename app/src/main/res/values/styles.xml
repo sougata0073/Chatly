@@ -8,7 +8,7 @@
 
     <style name="popupMenu" parent="Widget.AppCompat.PopupMenu">
         <item name="android:textColor">@color/bw</item>
-        <item name="android:colorBackground">@color/popup_menu_bg</item>
+        <item name="android:colorBackground">@color/bw_black_faded</item>
     </style>
     
     <style name="bottomNavActiveIndicator" parent="Widget.Material3.BottomNavigationView.ActiveIndicator">

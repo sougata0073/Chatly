@@ -7,8 +7,8 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="15dp"
         android:layout_marginTop="4dp"
+        android:layout_marginEnd="60dp"
         android:layout_marginBottom="4dp"
-        android:layout_marginEnd="30dp"
         android:gravity="start">
 
         <LinearLayout
@@ -21,14 +21,23 @@
             android:orientation="vertical"
             android:padding="12dp">
 
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="300dp"
+                android:layout_gravity="start"
+                android:scaleType="centerCrop"
+                tools:src="@drawable/test_image" />
+
             <TextView
                 android:id="@+id/tvText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="end"
+                android:layout_gravity="start"
                 android:autoLink="all"
                 android:linksClickable="true"
                 android:textColor="@color/black"
+                android:layout_marginTop="12dp"
                 android:textColorLink="@color/light_blue_dark"
                 android:textSize="16sp"
                 tools:text="Hello World!! www.google.com" />
@@ -38,10 +47,10 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
-                tools:text="12-07-2025 10:25"
                 android:layout_marginTop="8dp"
                 android:textColor="@color/black"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                tools:text="12-07-2025 10:25" />
 
             <TextView
                 android:id="@+id/tvIsTextEdited"
@@ -49,9 +58,9 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="start"
                 android:layout_marginTop="3dp"
-                tools:text="Edited"
                 android:textColor="@color/black"
-                android:textSize="11sp" />
+                android:textSize="11sp"
+                tools:text="Edited" />
 
         </LinearLayout>
     </LinearLayout>

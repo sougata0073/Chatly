@@ -6,6 +6,7 @@
     <color name="green">#FF00FF00</color>
     <color name="bw">#FF000000</color>
     <color name="bw_inverted">#FFFFFFFF</color>
+    <color name="bw_black_faded">#FFFFFFFF</color>
     <color name="bw_background">#FFFFFFFF</color>
     <color name="light_blue">#C4EDFF</color>
     <color name="onboarding_intro_content">#1565C0</color>
@@ -14,7 +15,6 @@
     <color name="grey">#808080</color>
     <color name="snack_bar_bg">#2D2C30</color>
     <color name="bw_light">#FFFFFFFF</color>
-    <color name="popup_menu_bg">#FFFFFFFF</color>
     <color name="bottom_nav_active_indicator">#03A9F4</color>
     <color name="bottom_nav_bg">#FFFFFF</color>
     <color name="unread_message">#9A9BB1</color>

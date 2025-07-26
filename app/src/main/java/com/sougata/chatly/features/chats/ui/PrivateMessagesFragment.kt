@@ -27,10 +27,7 @@ import com.sougata.chatly.features.chats.view_models.PrivateMessagesVMFactory
 import com.sougata.chatly.util.Animations
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.DecoratedViews
-import com.sougata.chatly.util.Files
 import io.github.jan.supabase.auth.auth
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
 class PrivateMessagesFragment : Fragment() {
@@ -168,8 +165,7 @@ class PrivateMessagesFragment : Fragment() {
                 text = text,
                 senderId = this.currentUserId,
                 receiverId = receiverId,
-                mediaType = null,
-                mediaUrl = null,
+                mediaData = null,
                 createdAt = DateTime.getCurrentISOTimestamp()
             )
             this.recyclerViewAdapter.insertItemAtFirst(tempPrivateMessage)

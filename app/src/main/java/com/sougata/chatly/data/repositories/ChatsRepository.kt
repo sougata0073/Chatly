@@ -7,7 +7,7 @@ import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.data.models.LimitOffsetDto
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.data.models.PrivateMessageGetDto
-import com.sougata.chatly.data.models.PrivateMessagePostDto
+import com.sougata.chatly.data.models.PrivateMessageInsertDto
 import io.github.jan.supabase.postgrest.postgrest
 import io.github.jan.supabase.postgrest.rpc
 import kotlinx.coroutines.Dispatchers
@@ -60,11 +60,11 @@ class ChatsRepository {
             }
         }
 
-    suspend fun insertPrivateMessage(privateMessagePostDto: PrivateMessagePostDto): TaskResult<PrivateMessage> =
+    suspend fun insertPrivateMessage(privateMessageInsertDto: PrivateMessageInsertDto): TaskResult<PrivateMessage> =
         withContext(Dispatchers.IO) {
             try {
 
-                val pmw = db.rpc("insert_private_message", privateMessagePostDto)
+                val pmw = db.rpc("insert_private_message", privateMessageInsertDto)
                     .decodeSingle<PrivateMessage>()
 
                 return@withContext TaskResult(pmw, TaskStatus.COMPLETED, "Task Completed")

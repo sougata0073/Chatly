@@ -8,8 +8,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.databinding.ItemListLoadingBinding
-import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageReceiverBinding
-import com.sougata.chatly.databinding.ItemTextOnlyPrivateMessageSenderBinding
+import com.sougata.chatly.databinding.ItemPmTextReceiveBinding
+import com.sougata.chatly.databinding.ItemPmTextSendBinding
 import com.sougata.chatly.util.DateTime
 import com.sougata.chatly.util.RecyclerViewUtil
 import io.github.jan.supabase.auth.auth
@@ -28,7 +28,7 @@ class PrivateMessagesAdapter(
         RecyclerView.ViewHolder(binding.root) {
 
         fun bind(pmw: PrivateMessage) {
-            if (this.binding is ItemTextOnlyPrivateMessageSenderBinding) {
+            if (this.binding is ItemPmTextSendBinding) {
                 this.binding.apply {
                     tvText.text = pmw.id.toString() + " " + pmw.text
                     val createdAt = pmw.createdAt
@@ -45,7 +45,7 @@ class PrivateMessagesAdapter(
                         tvIsTextEdited.visibility = View.GONE
                     }
                 }
-            } else if (this.binding is ItemTextOnlyPrivateMessageReceiverBinding) {
+            } else if (this.binding is ItemPmTextReceiveBinding) {
                 this.binding.apply {
                     tvText.text = pmw.id.toString() + " " + pmw.text
                     val createdAt = pmw.createdAt
@@ -85,9 +85,9 @@ class PrivateMessagesAdapter(
         val inflater = LayoutInflater.from(parent.context)
 
         val binding = if (viewType == this.viewTypeSender) {
-            ItemTextOnlyPrivateMessageSenderBinding.inflate(inflater, parent, false)
+            ItemPmTextSendBinding.inflate(inflater, parent, false)
         } else if (viewType == this.viewTypeReceiver) {
-            ItemTextOnlyPrivateMessageReceiverBinding.inflate(inflater, parent, false)
+            ItemPmTextReceiveBinding.inflate(inflater, parent, false)
         } else {
             ItemListLoadingBinding.inflate(inflater, parent, false)
         }

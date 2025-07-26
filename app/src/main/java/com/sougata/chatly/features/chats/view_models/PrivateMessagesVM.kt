@@ -11,7 +11,7 @@ import com.sougata.chatly.data.MySupabaseClient
 import com.sougata.chatly.data.models.PrivateChat
 import com.sougata.chatly.data.models.PrivateMessage
 import com.sougata.chatly.data.models.PrivateMessageGetDto
-import com.sougata.chatly.data.models.PrivateMessagePostDto
+import com.sougata.chatly.data.models.PrivateMessageInsertDto
 import com.sougata.chatly.data.repositories.ChatsRepository
 import io.github.jan.supabase.auth.auth
 import io.github.jan.supabase.realtime.broadcastFlow
@@ -99,12 +99,11 @@ class PrivateMessagesVM(private val privateChat: PrivateChat) : ViewModel() {
 
         this.viewModelScope.launch {
             val result = chatsRepo.insertPrivateMessage(
-                PrivateMessagePostDto(
+                PrivateMessageInsertDto(
                     privateChat.id!!,
                     receiverId,
                     tempPrivateMessage.text,
-                    tempPrivateMessage.mediaType,
-                    tempPrivateMessage.mediaUrl
+                    tempPrivateMessage.mediaData
                 )
             )
 

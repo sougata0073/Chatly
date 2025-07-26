@@ -3,10 +3,10 @@
     <color name="bw">#FFFFFFFF</color>
     <color name="bw_inverted">#FF000000</color>
     <color name="bw_background">#FF000000</color>
+    <color name="bw_black_faded">#4A4B62</color>
     <color name="onboarding_intro_circle_stroke">#2C2D3A</color>
     <color name="onboarding_intro_content">#40C4FF</color>
     <color name="bw_light">#1A1D22</color>
-    <color name="popup_menu_bg">#4A4B62</color>
     <color name="bottom_nav_bg">#393A4C</color>
     <color name="user_register_header_bg_main">#C4EDFF</color>
     <color name="user_register_header_bg_stroke">#2C2D3A</color>

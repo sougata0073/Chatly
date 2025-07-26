@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.card.MaterialCardView
+        style="?attr/materialCardViewElevatedStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardBackgroundColor="@color/bw_black_faded">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:paddingBottom="20dp">
+
+            <LinearLayout
+                android:id="@+id/layoutCamera"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnCamera"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Camera"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnRecord"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_mic" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Record"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnContact"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_user_filled"
+                    app:tint="@color/white" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Contact"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnGallery"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_gallery" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Galler"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnMyLocation"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_location" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="My Location"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <ImageButton
+                    android:id="@+id/btnDocument"
+                    android:layout_width="42dp"
+                    android:layout_height="42dp"
+                    android:background="@drawable/round_bg_transparent"
+                    android:backgroundTint="@color/light_blue_dark"
+                    android:padding="12dp"
+                    android:src="@drawable/ic_camera" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:text="Document"
+                    android:textColor="@color/bw"
+                    android:textSize="12sp"
+                    android:textStyle="bold" />
+            </LinearLayout>
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+</layout>
