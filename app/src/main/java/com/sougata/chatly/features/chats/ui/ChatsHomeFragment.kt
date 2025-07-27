@@ -112,7 +112,7 @@ class ChatsHomeFragment : Fragment() {
                 LinearLayoutManager.VERTICAL, false
             )
         }
-
+//
         this.binding.rvChatList.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             val layoutManager = binding.rvChatList.layoutManager as LinearLayoutManager
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
